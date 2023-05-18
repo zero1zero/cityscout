@@ -8,9 +8,8 @@ export default function Footer() {
         <Flex
             w="full"
             bg="#edf3f8"
-            _dark={{
-                bg: "#3e3e3e",
-            }}
+            position='absolute'
+            bottom='0'
             alignItems="center"
             justifyContent="center"
         >
@@ -26,21 +25,12 @@ export default function Footer() {
                 px="6"
                 py="4"
                 bg="white"
-                _dark={{
-                    bg: "gray.800",
-                }}
             >
                 <chakra.a
                     href="#"
                     fontSize="xl"
                     fontWeight="bold"
                     color="gray.600"
-                    _dark={{
-                        color: "white",
-                        _hover: {
-                            color: "gray.300",
-                        },
-                    }}
                     _hover={{
                         color: "gray.700",
                     }}
@@ -54,9 +44,6 @@ export default function Footer() {
                         sm: "0",
                     }}
                     color="gray.800"
-                    _dark={{
-                        color: "white",
-                    }}
                 >
                     All rights reserved
                 </chakra.p>
@@ -66,12 +53,6 @@ export default function Footer() {
                         href="#"
                         mx="2"
                         color="gray.600"
-                        _dark={{
-                            color: "gray.300",
-                            _hover: {
-                                color: "gray.400",
-                            },
-                        }}
                         _hover={{
                             color: "gray.500",
                         }}
@@ -87,12 +68,6 @@ export default function Footer() {
                         href="#"
                         mx="2"
                         color="gray.600"
-                        _dark={{
-                            color: "gray.300",
-                            _hover: {
-                                color: "gray.400",
-                            },
-                        }}
                         _hover={{
                             color: "gray.500",
                         }}
@@ -108,12 +83,6 @@ export default function Footer() {
                         href="#"
                         mx="2"
                         color="gray.600"
-                        _dark={{
-                            color: "gray.300",
-                            _hover: {
-                                color: "gray.400",
-                            },
-                        }}
                         _hover={{
                             color: "gray.500",
                         }}

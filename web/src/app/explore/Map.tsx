@@ -1,4 +1,4 @@
-import {AspectRatio, Box} from "@chakra-ui/react";
+import {AspectRatio} from "@chakra-ui/react";
 import React from "react";
 import {Cities} from "@/model/Cities";
 

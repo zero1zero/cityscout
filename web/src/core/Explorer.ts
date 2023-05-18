@@ -5,6 +5,8 @@ import {Cities} from "@/model/Cities";
 
 export default class Explorer {
 
+    public static minimumCriterion = 3
+
     private storage: Storage
     private api: API
 
@@ -14,7 +16,7 @@ export default class Explorer {
     }
 
     explore = async (criterion: Criterion): Promise<Cities> => {
-        if (criterion.criterion.length < 4) {
+        if (criterion.criterion.length < Explorer.minimumCriterion) {
             return {cities: []}
         }
 

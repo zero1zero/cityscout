@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from 'next/image'
+import NextLink from 'next/link'
 import {
     Box,
     Button,
@@ -12,16 +13,16 @@ import {
     IconButton,
     Link,
     Spacer,
-    useColorModeValue,
     useDisclosure,
     VStack,
 } from "@chakra-ui/react";
 import {AiFillHome, AiOutlineInbox, AiOutlineMenu,} from "react-icons/ai";
 import {BsFillCameraVideoFill} from "react-icons/bs";
 
+
 export default function Header() {
-    const bg = useColorModeValue("white", "gray.800");
-    const cl = useColorModeValue("gray.800", "white");
+    const bg = "white";
+    const cl = "gray.800";
     const mobileNav = useDisclosure();
 
     const MobileNavContent = (
@@ -53,10 +54,10 @@ export default function Header() {
                 variant="solid"
                 leftIcon={<AiOutlineInbox/>}
             >
-                Blog
+                Explore
             </Button>
             <Button w="full" variant="ghost" leftIcon={<BsFillCameraVideoFill/>}>
-                Pricing
+                About
             </Button>
         </VStack>
     );
@@ -90,6 +91,23 @@ export default function Header() {
                         }}
                     >
                         <HStack spacing={1}>
+                            <Link as={NextLink} href='/explore'>
+                                <Button
+                                    bg={bg}
+                                    color="gray.500"
+                                    display="inline-flex"
+                                    alignItems="center"
+                                    fontSize="md"
+                                    _hover={{
+                                        color: cl,
+                                    }}
+                                    _focus={{
+                                        boxShadow: "none",
+                                    }}
+                                >
+                                    Explore
+                                </Button>
+                            </Link>
                             <Button
                                 bg={bg}
                                 color="gray.500"
@@ -103,22 +121,7 @@ export default function Header() {
                                     boxShadow: "none",
                                 }}
                             >
-                                Blog
-                            </Button>
-                            <Button
-                                bg={bg}
-                                color="gray.500"
-                                display="inline-flex"
-                                alignItems="center"
-                                fontSize="md"
-                                _hover={{
-                                    color: cl,
-                                }}
-                                _focus={{
-                                    boxShadow: "none",
-                                }}
-                            >
-                                Pricing
+                                About
                             </Button>
                         </HStack>
                     </Box>
@@ -146,9 +149,6 @@ export default function Header() {
                             aria-label="Open menu"
                             fontSize="20px"
                             color="gray.800"
-                            _dark={{
-                                color: "inherit",
-                            }}
                             variant="ghost"
                             icon={<AiOutlineMenu/>}
                             onClick={mobileNav.onOpen}

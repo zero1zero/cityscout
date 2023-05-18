@@ -1,7 +1,7 @@
 'use client';
 
-import React, {useEffect, useState} from "react";
-import {Grid} from "@chakra-ui/react";
+import React, {useCallback, useEffect, useState} from "react";
+import {Grid, GridItem} from "@chakra-ui/react";
 import Criteria from "@/app/explore/Criteria";
 import {Criterion} from "@/model/Criterion";
 import CitiesCards from "@/app/explore/Cities";
@@ -9,6 +9,7 @@ import Dependencies from "@/core/Dependencies";
 import {Cities} from "@/model/Cities";
 import {Map} from "@/app/explore/Map";
 import {CriteriaNeededOverlay} from "@/app/explore/CriteriaNeededOverlay";
+import Explorer from "@/core/Explorer";
 
 const dummyCities = {
     cities: [
@@ -34,12 +35,12 @@ export default function Home() {
 
     const explorer = Dependencies.instance.explorer
 
+    const [firstReco, setFirstReco] = useState(true)
     const [criterion, setCriterion] = useState<Criterion>({criterion: []});
     const [cities, setCities] = useState<Cities>()
     const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        console.log("effect called")
+    const updateRecommendations = useCallback(() => {
         setLoading(true)
         explorer.explore(criterion)
             .then(cities => {
@@ -48,7 +49,15 @@ export default function Home() {
                 }
             })
             .finally(() => setLoading(false))
-    }, [criterion, explorer])
+    }, [explorer, criterion])
+
+    useEffect(() => {
+        //the first time we go over min, auto reco
+        if (criterion.criterion.length > Explorer.minimumCriterion && firstReco) {
+            updateRecommendations()
+            setFirstReco(false)
+        }
+    }, [criterion, explorer, firstReco, updateRecommendations])
 
     const add = (criteria: string) => {
         if (!criteria)
@@ -72,14 +81,29 @@ export default function Home() {
 
     return (
         <>
-            <Criteria criterion={criterion} onAdd={add} onRemove={remove}/>
+            {/*<Heading as='h3' size='xl' my={5} ml={4}>*/}
+            {/*    City Explorer*/}
+            {/*</Heading>*/}
+            <Criteria
+                criterion={criterion}
+                onAdd={add}
+                onRemove={remove}
+                firstReco={firstReco}
+                onRecommend={updateRecommendations}
+            />
             <CriteriaNeededOverlay
                 hasCities={cities != undefined}
                 loading={loading}
                 moreToGo={Math.abs(criterion.criterion.length - 4)}>
-                <Grid templateColumns='repeat(2, 1fr)' gap={6}>
-                    <CitiesCards cities={cities ? cities : dummyCities}/>
-                    <Map cities={cities ? cities : dummyCities}/>
+                <Grid templateColumns='repeat(2, 1fr)'
+                      mt={10}
+                      gap={3}>
+                    <GridItem colSpan={1}>
+                        <CitiesCards cities={cities ? cities : dummyCities}/>
+                    </GridItem>
+                    <GridItem colSpan={1}>
+                        <Map cities={cities ? cities : dummyCities}/>
+                    </GridItem>
                 </Grid>
             </CriteriaNeededOverlay>
         </>

@@ -18,6 +18,8 @@ const CityCards = ({cities}: { cities: Cities }) => {
         transition: "0.6s ease",
         borderRadius: "0 3px 3px 0",
         userSelect: "none",
+        bg: "#3e3e3e",
+        opacity: 0.2,
         _hover: {
             opacity: 0.8,
             bg: "black",
@@ -46,25 +48,24 @@ const CityCards = ({cities}: { cities: Cities }) => {
         <Flex
             w="full"
             bg="#edf3f8"
-            _dark={{
-                bg: "#3e3e3e",
-            }}
             alignItems="center"
             justifyContent="center"
         >
             <Flex w="full" overflow="hidden" pos="relative">
                 <Flex h="500px" w="full" {...carouselStyle}>
-                    {cities.cities.map((city) => (
-                        <Box key={`slide-${city.city}`} boxSize="full" flex="none">
+                    {cities.cities.map((city, index) => (
+                        <Box key={`slide-${city.city}`}
+                             boxSize="full"
+                             flex="none"
+                        >
                             <Text
                                 color="white"
-                                fontSize="xs"
-                                p="8px 12px"
+                                fontSize="xl"
+                                fontWeight='bold'
+                                p="8px 30px"
                                 pos="absolute"
-                                top="0"
-                            >
-                                {/*{sid + 1} / {slidesCount}*/}
-                                10
+                                top="0">
+                                {index + 1} / {cities.cities.length}
                             </Text>
                             <CityCard city={city} key={city.city}/>
                         </Box>
@@ -105,9 +106,6 @@ const CityCard = ({city}: { city: City }) => {
     return (
         <Flex
             bg="#edf3f8"
-            _dark={{
-                bg: "#3e3e3e",
-            }}
             w="full"
             alignItems="center"
             justifyContent="center"
@@ -117,9 +115,6 @@ const CityCard = ({city}: { city: City }) => {
                 rounded="lg"
                 shadow="md"
                 bg="white"
-                _dark={{
-                    bg: "gray.800",
-                }}
                 maxW="2xl"
             >
                 <Image
@@ -136,9 +131,6 @@ const CityCard = ({city}: { city: City }) => {
                         <Link
                             display="block"
                             color="gray.800"
-                            _dark={{
-                                color: "white",
-                            }}
                             fontWeight="bold"
                             fontSize="2xl"
                             _hover={{
@@ -152,9 +144,6 @@ const CityCard = ({city}: { city: City }) => {
                             mt={2}
                             fontSize="sm"
                             color="gray.600"
-                            _dark={{
-                                color: "gray.400",
-                            }}
                         >
                             {city.reason}
                         </chakra.p>
@@ -166,9 +155,6 @@ const CityCard = ({city}: { city: City }) => {
                                 mx={1}
                                 fontSize="sm"
                                 color="gray.600"
-                                _dark={{
-                                    color: "gray.300",
-                                }}
                             >
                                 21 SEP 2015
                             </chakra.span>

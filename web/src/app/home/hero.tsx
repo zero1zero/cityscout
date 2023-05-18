@@ -40,8 +40,7 @@ export default function CallToActionWithAnnotation() {
                         alignSelf={'center'}
                         position={'relative'}>
                         <Button
-                            colorScheme={'green'}
-                            bg={'green.400'}
+                            bg={'brand.400'}
                             rounded={'full'}
                             px={6}
                             _hover={{

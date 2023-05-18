@@ -1,19 +1,7 @@
 'use client';
 
 import {ReactNode} from 'react';
-import {
-    Box,
-    Button,
-    Heading,
-    HStack,
-    List,
-    ListIcon,
-    ListItem,
-    Stack,
-    Text,
-    useColorModeValue,
-    VStack,
-} from '@chakra-ui/react';
+import {Box, Button, Heading, HStack, List, ListIcon, ListItem, Stack, Text, VStack,} from '@chakra-ui/react';
 import {FaCheckCircle} from 'react-icons/fa';
 
 function PriceWrapper({children}: { children: ReactNode }) {
@@ -23,7 +11,7 @@ function PriceWrapper({children}: { children: ReactNode }) {
             shadow="base"
             borderWidth="1px"
             alignSelf={{base: 'center', lg: 'flex-start'}}
-            borderColor={useColorModeValue('gray.200', 'gray.500')}
+            borderColor={'gray.200'}
             borderRadius={'xl'}>
             {children}
         </Box>
@@ -66,7 +54,7 @@ export default function ThreeTierPricing() {
                         </HStack>
                     </Box>
                     <VStack
-                        bg={useColorModeValue('gray.50', 'gray.700')}
+                        bg={'gray.50'}
                         py={4}
                         borderBottomRadius={'xl'}>
                         <List spacing={3} textAlign="start" px={12}>
@@ -100,10 +88,10 @@ export default function ThreeTierPricing() {
                             style={{transform: 'translate(-50%)'}}>
                             <Text
                                 textTransform="uppercase"
-                                bg={useColorModeValue('red.300', 'red.700')}
+                                bg={'red.300'}
                                 px={3}
                                 py={1}
-                                color={useColorModeValue('gray.900', 'gray.300')}
+                                color={'gray.900'}
                                 fontSize="sm"
                                 fontWeight="600"
                                 rounded="xl">
@@ -127,7 +115,7 @@ export default function ThreeTierPricing() {
                             </HStack>
                         </Box>
                         <VStack
-                            bg={useColorModeValue('gray.50', 'gray.700')}
+                            bg={'gray.50'}
                             py={4}
                             borderBottomRadius={'xl'}>
                             <List spacing={3} textAlign="start" px={12}>
@@ -178,7 +166,7 @@ export default function ThreeTierPricing() {
                         </HStack>
                     </Box>
                     <VStack
-                        bg={useColorModeValue('gray.50', 'gray.700')}
+                        bg={'gray.50'}
                         py={4}
                         borderBottomRadius={'xl'}>
                         <List spacing={3} textAlign="start" px={12}>
