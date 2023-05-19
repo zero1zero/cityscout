@@ -62,7 +62,6 @@ export default function Header() {
         </VStack>
     );
     return (
-        <React.Fragment>
             <chakra.header
                 h="full"
                 bg={bg}
@@ -72,6 +71,7 @@ export default function Header() {
                     sm: 4,
                 }}
                 py={4}
+                mb={4}
             >
                 <Flex alignItems="center" justifyContent="space-between" mx="auto">
                     <Link display="inline-flex" marginEnd={6} alignItems="center" href="/">
@@ -158,7 +158,6 @@ export default function Header() {
 
                 {MobileNavContent}
             </chakra.header>
-        </React.Fragment>
     );
 };
 

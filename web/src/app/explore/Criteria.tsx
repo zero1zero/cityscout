@@ -73,8 +73,7 @@ const CriterionTags = ({criterion, onRemove, firstReco, onRecommend}: {
                 <Button rightIcon={<FiCloudLightning/>}
                         width='100%'
                         rounded="md" shadow="md"
-                        color='brand.400'
-                        variant='outline'
+                        colorScheme='brand'
                         onClick={onRecommend}>
                     Recommend Cities
                 </Button>
@@ -187,7 +186,7 @@ const AddCriteria = ({onSubmit}: { onSubmit: (criteria: string) => void }) => {
 
                 <Button rightIcon={<FiPlus/>}
                         rounded="md" shadow="md"
-                        variant='outline'
+                        colorScheme='brand'
                         ml={3}
                         type='submit'>
                     Add

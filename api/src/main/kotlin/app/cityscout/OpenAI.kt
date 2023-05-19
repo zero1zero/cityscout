@@ -24,9 +24,7 @@ class OpenAI {
 
     @OptIn(BetaOpenAI::class)
     suspend fun go(criterion : List<String>): Cities {
-
-
-        val content = "Give me 3 cities in the US that: " + criterion.joinToString(",") + ". Respond in form <city>" + special + "<a 3 sentence reason>."
+        val content = "Give me 3 cities in the US that: " + criterion.joinToString(";") + ". Respond in form <city>" + special + "<a 4 sentence reason>."
 
         val modelId = ModelId("gpt-3.5-turbo")
         val messages = listOf(ChatMessage(ChatRole.User, content))

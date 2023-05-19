@@ -14,7 +14,7 @@ import Explorer from "@/core/Explorer";
 const dummyCities = {
     cities: [
         {
-            city: "Garbage, OR",
+            city: "Portland, OR",
             reason: "Portland is known for its abundance of cafes and bars, as well as its liberal culture and access to nature with nearby parks and hiking trails. The city also offers a variety of job opportunities, particularly in the tech industry. Additionally, Portland is home to the Portland Trail Blazers basketball team.",
             img: "https://media.cntraveler.com/photos/5c002d131b3466234d813837/1:1/w_1600%2Cc_limit/GettyImages-909700234.jpg"
         },
@@ -24,7 +24,7 @@ const dummyCities = {
             img: "https://images.pexels.com/photos/3964406/pexels-photo-3964406.jpeg"
         },
         {
-            city: "San Francisco",
+            city: "San Francisco, CA",
             reason: "San Francisco is a city with a vibrant cafe and bar scene, as well as a reputation for being one of the most liberal cities in the US. It is surrounded by natural beauty, including the Golden Gate Park and nearby beaches. The city offers a variety of job opportunities, particularly in the tech industry. Additionally, San Francisco is home to the San Francisco Giants baseball team.",
             img: "https://images.pexels.com/photos/3584437/pexels-photo-3584437.jpeg"
         }
@@ -44,9 +44,8 @@ export default function Home() {
         setLoading(true)
         explorer.explore(criterion)
             .then(cities => {
-                if (cities.cities.length > 0) {
-                    setCities(cities)
-                }
+                setCities(cities)
+                setFirstReco(false)
             })
             .finally(() => setLoading(false))
     }, [explorer, criterion])
@@ -55,7 +54,6 @@ export default function Home() {
         //the first time we go over min, auto reco
         if (criterion.criterion.length > Explorer.minimumCriterion && firstReco) {
             updateRecommendations()
-            setFirstReco(false)
         }
     }, [criterion, explorer, firstReco, updateRecommendations])
 

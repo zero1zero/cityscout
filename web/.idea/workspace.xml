@@ -5,24 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1a45f92-b07e-4d5b-9a30-81e3f91aba99" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/explore/Tutorial.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/web.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/web.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/common/footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/common/footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/common/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/common/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/OpenAI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/OpenAI.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/routes/Explore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/routes/Explore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/common/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/common/header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/explore/Cities.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/Cities.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/explore/Criteria.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/Criteria.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/explore/CriteriaNeededOverlay.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/CriteriaNeededOverlay.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/explore/Map.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/Map.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/explore/Tutorial.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/Tutorial.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/explore/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/home/hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/hero.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/home/pricing.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/pricing.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/providers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/providers.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Explorer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Explorer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/home/pricing.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +35,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/zack/src/cityscout/web",
+    "last_opened_file_path": "/Users/zack/src/cityscout/web/src/app/map",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -52,6 +45,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/map" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -77,7 +75,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1684417155374</updated>
-      <workItem from="1684417156405" duration="23455000" />
+      <workItem from="1684417156405" duration="36741000" />
     </task>
     <servers />
   </component>

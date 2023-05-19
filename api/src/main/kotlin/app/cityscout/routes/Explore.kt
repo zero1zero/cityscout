@@ -30,11 +30,11 @@ fun Application.configureExplore() {
         post("/explore") {
             val criterion = call.receive<Criterion>()
 
-//            call.respond(openAI.go(criterion.criterion))
+            call.respond(openAI.go(criterion.criterion))
 
-            Thread.sleep(2000)
-
-            call.respond(dummy)
+//            Thread.sleep(2000)
+//
+//            call.respond(dummy)
         }
     }
 }

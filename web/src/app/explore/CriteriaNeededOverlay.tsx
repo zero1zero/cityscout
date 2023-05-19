@@ -1,4 +1,4 @@
-import {AbsoluteCenter, Box, Center, chakra, CircularProgress, Flex, Text} from "@chakra-ui/react";
+import {AbsoluteCenter, Box, Center, chakra, CircularProgress, Flex, Heading, Text} from "@chakra-ui/react";
 import React from "react";
 
 interface Props {
@@ -38,13 +38,13 @@ const CallToAction = ({moreToGo}: { moreToGo: number }) => {
                     color="gray.900"
                     mb={6}
                 >
-                    <chakra.span display="block">
+                    <Heading as='h3' size='xl'>
                         <Text as='i'>{moreToGo}</Text> more to go!
-                    </chakra.span>
+                    </Heading>
                     <chakra.p
                         mb={4}
-                        fontSize="lg"
-                        color="brand.600"
+                        fontSize="md"
+                        color="brand.500"
                         letterSpacing="wider"
                     >
                         You{"'"}re only <Text as='i'>{moreToGo}</Text> more criteria away from your city
