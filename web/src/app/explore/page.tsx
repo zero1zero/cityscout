@@ -1,69 +1,60 @@
 'use client';
 
-import React, {useCallback, useEffect, useState} from "react";
-import {Grid, GridItem} from "@chakra-ui/react";
+import React, {useCallback, useState} from "react";
+import {Box, Center, Flex, VStack} from "@chakra-ui/react";
 import Criteria from "@/app/explore/Criteria";
 import {Criterion} from "@/model/Criterion";
-import CitiesCards from "@/app/explore/Cities";
 import Dependencies from "@/core/Dependencies";
 import {Cities} from "@/model/Cities";
-import {Map} from "@/app/explore/Map";
-import {CriteriaNeededOverlay} from "@/app/explore/CriteriaNeededOverlay";
 import Explorer from "@/core/Explorer";
-
-const dummyCities = {
-    cities: [
-        {
-            city: "Portland, OR",
-            reason: "Portland is known for its abundance of cafes and bars, as well as its liberal culture and access to nature with nearby parks and hiking trails. The city also offers a variety of job opportunities, particularly in the tech industry. Additionally, Portland is home to the Portland Trail Blazers basketball team.",
-            img: "https://media.cntraveler.com/photos/5c002d131b3466234d813837/1:1/w_1600%2Cc_limit/GettyImages-909700234.jpg"
-        },
-        {
-            city: "Seattle, WA",
-            reason: "Seattle is a city with a thriving coffee culture and a plethora of bars and breweries. It is also known for its progressive politics and access to nature with nearby mountains and waterways. The city offers a diverse range of job opportunities, particularly in the tech industry. Additionally, Seattle is home to the Seattle Mariners baseball team.",
-            img: "https://images.pexels.com/photos/3964406/pexels-photo-3964406.jpeg"
-        },
-        {
-            city: "San Francisco, CA",
-            reason: "San Francisco is a city with a vibrant cafe and bar scene, as well as a reputation for being one of the most liberal cities in the US. It is surrounded by natural beauty, including the Golden Gate Park and nearby beaches. The city offers a variety of job opportunities, particularly in the tech industry. Additionally, San Francisco is home to the San Francisco Giants baseball team.",
-            img: "https://images.pexels.com/photos/3584437/pexels-photo-3584437.jpeg"
-        }
-    ]
-}
+import CityCard from "@/app/explore/City";
 
 export default function Home() {
 
     const explorer = Dependencies.instance.explorer
 
-    const [firstReco, setFirstReco] = useState(true)
     const [criterion, setCriterion] = useState<Criterion>({criterion: []});
     const [cities, setCities] = useState<Cities>()
     const [loading, setLoading] = useState(false)
+    const [selected, setSelected] = useState<number>(0)
 
     const updateRecommendations = useCallback(() => {
         setLoading(true)
         explorer.explore(criterion)
             .then(cities => {
                 setCities(cities)
-                setFirstReco(false)
             })
             .finally(() => setLoading(false))
     }, [explorer, criterion])
-
-    useEffect(() => {
-        //the first time we go over min, auto reco
-        if (criterion.criterion.length > Explorer.minimumCriterion && firstReco) {
-            updateRecommendations()
-        }
-    }, [criterion, explorer, firstReco, updateRecommendations])
 
     const add = (criteria: string) => {
         if (!criteria)
             return
 
+        if (criteria == "LOAD-MORE") {
+            return
+        }
+
         setCriterion((previous) => {
             return {
                 criterion: [...previous.criterion, criteria]
+            }
+        })
+    }
+
+    const change = (last: string, next: string) => {
+        if (last == next) {
+            return
+        }
+
+        setCriterion((previous) => {
+            const index: number = previous.criterion
+                .findIndex(value => value == last)
+
+            previous.criterion.splice(index, 1, next)
+
+            return {
+                criterion: [...previous.criterion]
             }
         })
     }
@@ -77,33 +68,58 @@ export default function Home() {
         })
     }
 
-    return (
-        <>
-            {/*<Heading as='h3' size='xl' my={5} ml={4}>*/}
-            {/*    City Explorer*/}
-            {/*</Heading>*/}
+    const criteria = () => {
+        return (
             <Criteria
+                loading={loading}
                 criterion={criterion}
+                moreToGo={Explorer.minimumCriterion - criterion.criterion.length + 1}
                 onAdd={add}
+                onChange={change}
                 onRemove={remove}
-                firstReco={firstReco}
                 onRecommend={updateRecommendations}
             />
-            <CriteriaNeededOverlay
-                hasCities={cities != undefined}
-                loading={loading}
-                moreToGo={Math.abs(criterion.criterion.length - 4)}>
-                <Grid templateColumns='repeat(2, 1fr)'
-                      mt={10}
-                      gap={3}>
-                    <GridItem colSpan={1}>
-                        <CitiesCards cities={cities ? cities : dummyCities}/>
-                    </GridItem>
-                    <GridItem colSpan={1}>
-                        <Map cities={cities ? cities : dummyCities}/>
-                    </GridItem>
-                </Grid>
-            </CriteriaNeededOverlay>
-        </>
-    )
+        )
+    }
+
+    const onSelected = (city: number) => {
+        setSelected(city)
+    }
+
+    const citiesBlock = () => {
+        if (!cities) {
+            return (
+                <Center
+                    h='100vh'
+                    id='bg-simple'
+                    w='full'>
+                    {criteria()}
+                </Center>
+            )
+        }
+
+        return (
+            <>
+                <VStack
+                    pt={20}
+                >
+                    {criteria()}
+                    <Flex
+                        flexDirection='column'
+                        alignItems='center'
+                        pb={20}
+                    >
+                        {cities.cities.map((city, index) => (
+                            <CityCard key={`${city}-${index}`} city={city}/>
+                        ))}
+                    </Flex>
+                </VStack>
+                <Box id='bg-bottom'>
+                    <Box id='bg'/>
+                </Box>
+            </>
+        )
+    }
+
+    return (citiesBlock())
 }

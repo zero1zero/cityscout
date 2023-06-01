@@ -1,10 +1,10 @@
-import {Box, chakra, Flex, HStack, Image, Link, Text, TextProps} from "@chakra-ui/react";
-import React, {useState} from "react";
+import {Box, Flex, HStack, Text, TextProps} from "@chakra-ui/react";
+import React, {useEffect, useState} from "react";
 import {Cities} from "@/model/Cities";
-import {City} from "@/model/City";
+import CityCard from "@/app/explore/City";
 
 
-const CityCards = ({cities}: { cities: Cities }) => {
+export default function CityCards({cities, onSelected}: { cities: Cities, onSelected: (selected: number) => void }) {
     const arrowStyles: TextProps = {
         cursor: "pointer",
         pos: "absolute",
@@ -28,6 +28,10 @@ const CityCards = ({cities}: { cities: Cities }) => {
 
     const [currentSlide, setCurrentSlide] = useState(0);
 
+    useEffect(() => {
+        onSelected(currentSlide)
+    }, [currentSlide, onSelected])
+
     const prevSlide = () => {
         setCurrentSlide((s) => (s === 0 ? cities.cities.length - 1 : s - 1));
     };
@@ -48,13 +52,15 @@ const CityCards = ({cities}: { cities: Cities }) => {
         <Flex
             w="full"
             bg="#edf3f8"
-            alignItems="center"
-            justifyContent="center"
+            flexDirection='column'
+            mb={10}
         >
-            <Flex w="full" overflow="hidden" pos="relative">
-                <Flex h="500px" w="full" {...carouselStyle}>
+            <Flex w="full"
+                  overflow="hidden"
+                  pos="relative">
+                <Flex w="full" {...carouselStyle}>
                     {cities.cities.map((city, index) => (
-                        <Box key={`slide-${city.city}`}
+                        <Box key={`slide-${city.name.city}`}
                              boxSize="full"
                              flex="none"
                         >
@@ -67,107 +73,41 @@ const CityCards = ({cities}: { cities: Cities }) => {
                                 top="0">
                                 {index + 1} / {cities.cities.length}
                             </Text>
-                            <CityCard city={city} key={city.city}/>
+                            <CityCard city={city} key={city.name.city}/>
                         </Box>
                     ))}
                 </Flex>
-                <Text {...arrowStyles} left="0" onClick={prevSlide}>
+                <Text {...arrowStyles} left="0" onClick={prevSlide} hidden={currentSlide == 0}>
                     &#10094;
                 </Text>
-                <Text {...arrowStyles} right="0" onClick={nextSlide}>
+                <Text {...arrowStyles} right="0" onClick={nextSlide} hidden={currentSlide == cities.cities.length - 1}>
                     &#10095;
                 </Text>
-                <HStack justify="center" pos="absolute" bottom="8px" w="full">
-                    {Array.from({
-                        length: cities.cities.length,
-                    }).map((_, slide) => (
-                        <Box
-                            key={`dots-${slide}`}
-                            cursor="pointer"
-                            boxSize={["7px", null, "15px"]}
-                            m="0 2px"
-                            bg={currentSlide === slide ? "blackAlpha.800" : "blackAlpha.500"}
-                            rounded="50%"
-                            display="inline-block"
-                            transition="background-color 0.6s ease"
-                            _hover={{
-                                bg: "blackAlpha.800",
-                            }}
-                            onClick={() => setSlide(slide)}
-                        ></Box>
-                    ))}
-                </HStack>
             </Flex>
+            <HStack
+                justify="center"
+                my={4}
+                w="full">
+                {Array.from({
+                    length: cities.cities.length,
+                }).map((_, slide) => (
+                    <Box
+                        key={`dots-${slide}`}
+                        cursor="pointer"
+                        boxSize={["7px", null, "15px"]}
+                        m="0 2px"
+                        bg={currentSlide === slide ? "blackAlpha.800" : "blackAlpha.500"}
+                        rounded="50%"
+                        display="inline-block"
+                        transition="background-color 0.6s ease"
+                        _hover={{
+                            bg: "blackAlpha.800",
+                        }}
+                        onClick={() => setSlide(slide)}
+                    ></Box>
+                ))}
+            </HStack>
         </Flex>
     );
 }
 
-const CityCard = ({city}: { city: City }) => {
-    return (
-        <Flex
-            bg="#edf3f8"
-            w="full"
-            alignItems="center"
-            justifyContent="center"
-        >
-            <Box
-                mx="auto"
-                rounded="lg"
-                shadow="md"
-                bg="white"
-                maxW="2xl"
-            >
-                <Image
-                    roundedTop="lg"
-                    w="full"
-                    h={64}
-                    fit="cover"
-                    src={city.img}
-                    alt="Article"
-                />
-
-                <Box p={4}>
-                    <Box>
-                        <Link
-                            display="block"
-                            color="gray.800"
-                            fontWeight="bold"
-                            fontSize="2xl"
-                            _hover={{
-                                color: "gray.600",
-                                textDecor: "underline",
-                            }}
-                        >
-                            {city.city}
-                        </Link>
-                        <chakra.p
-                            mt={2}
-                            fontSize="sm"
-                            color="gray.600"
-                        >
-                            {city.reason}
-                        </chakra.p>
-                    </Box>
-
-                    <Box mt={4}>
-                        <Flex alignItems="center">
-                            <chakra.span
-                                mx={1}
-                                fontSize="sm"
-                                color="gray.600"
-                            >
-                                21 SEP 2015
-                            </chakra.span>
-                        </Flex>
-                    </Box>
-                </Box>
-            </Box>
-        </Flex>
-    )
-}
-
-export default function CitiesLayout({cities}: { cities: Cities }) {
-    return (
-        <CityCards cities={cities}/>
-    )
-}

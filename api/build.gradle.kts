@@ -1,12 +1,12 @@
 import net.pwall.json.schema.codegen.CodeGenerator
 import net.pwall.json.schema.codegen.TargetLanguage
-import net.pwall.json.schema.codegen.ClassId
 
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version : String by project
 val h2_version : String by project
+val ktorm_version: String by project
 
 buildscript {
     repositories {
@@ -36,6 +36,10 @@ application {
 repositories {
     mavenCentral()
 }
+//quiet compileJava' task (current target is 17) and 'compileKotlin' task (current target is 1.8)
+kotlin {
+    jvmToolchain(18)
+}
 
 dependencies {
     implementation("io.ktor:ktor-server-cors-jvm:$ktor_version")
@@ -61,11 +65,16 @@ dependencies {
 
     implementation("com.aallam.openai:openai-client:3.2.3")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$kotlin_version")
+    implementation("it.skrape:skrapeit:1.1.5")
+
+    //db stuff
+    implementation("org.ktorm:ktorm-core:${ktorm_version}")
+    implementation("org.xerial:sqlite-jdbc:3.42.0.0")
 
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-    testImplementation("io.ktor:ktor-client-content-negotiation:$kotlin_version")
 }
 
 val codegen by tasks.registering {

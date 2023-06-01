@@ -5,17 +5,64 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1a45f92-b07e-4d5b-9a30-81e3f91aba99" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/OpenAI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/OpenAI.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/core/CensusData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/core/Images.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/core/Scraper.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../api/src/main/resources/schema/city-name.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../api/src/main/resources/schema/population.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../api/src/test/kotlin/app/cityscout/ScraperTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../api/src/test/kotlin/app/cityscout/core/CensusDataTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../data/census/data/abbr.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favico/android-chrome-192x192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favico/android-chrome-512x512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favico/apple-touch-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favico/favicon-16x16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favico/favicon-32x32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favico/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favico/site.webmanifest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/explore/City.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/explore/MoreCity.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/explore/city/Forecast.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/layout.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../api/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../api/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/Application.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/OpenAI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/core/OpenAI.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/model/City.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/model/City.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Databases.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Databases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/HTTP.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/HTTP.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Monitoring.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Monitoring.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Routing.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Security.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Security.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Serialization.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/Serialization.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/UsersSchema.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/plugins/UsersSchema.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/routes/Explore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/kotlin/app/cityscout/routes/Explore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/main/resources/schema/city.json" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/main/resources/schema/city.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/test/kotlin/app/cityscout/ApplicationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/test/kotlin/app/cityscout/ApplicationTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api/src/test/kotlin/app/cityscout/OpenAITest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../api/src/test/kotlin/app/cityscout/OpenAITest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/web.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/web.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/vercel.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/common/footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/common/footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/common/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/common/globals.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/common/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/common/header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/explore/Cities.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/Cities.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/explore/Criteria.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/Criteria.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/explore/CriteriaNeededOverlay.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/CriteriaNeededOverlay.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/explore/CriteriaNeededOverlay.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/explore/Map.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/Map.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/explore/Tutorial.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/Tutorial.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/explore/Tutorial.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/explore/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/explore/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/home/pricing.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/home/hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/hero.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/providers.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/providers.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Cities.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Cities.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/City.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/City.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,28 +73,37 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="2Py6pFTAZ4EyRUqMtY7n8SKjqr1" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/zack/src/cityscout/web/src/app/map",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "ts.external.directory.path": "/Users/zack/src/cityscout/web/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/zack/src/cityscout/web/public&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/zack/src/cityscout/web/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/src/app/nh" />
       <recent name="$PROJECT_DIR$/src/app/map" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/favico" />
+      <recent name="$PROJECT_DIR$/src/app/explore" />
     </key>
   </component>
   <component name="RunManager">
@@ -75,7 +131,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1684417155374</updated>
-      <workItem from="1684417156405" duration="36741000" />
+      <workItem from="1684417156405" duration="37572000" />
+      <workItem from="1684465429673" duration="90834000" />
+      <workItem from="1685478319833" duration="51913000" />
     </task>
     <servers />
   </component>

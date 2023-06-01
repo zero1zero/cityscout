@@ -8,8 +8,8 @@ const theme: ThemeConfig = extendTheme({
     initialColorMode: 'light',
     useSystemColorMode: false,
     fonts: {
-        heading: `'Open Sans', sans-serif`,
-        body: `'Raleway', sans-serif`,
+        heading: 'InterVariable, sans-serif',
+        body: 'InterVariable, sans-serif',
     },
     colors: {
         grey:
@@ -25,6 +25,13 @@ const theme: ThemeConfig = extendTheme({
                 800: '#282626',
                 900: '#150a0d',
             },
+        core: {
+            red: '#BF6374',
+            purple: '#6B5BA6',
+            blue: '#8DA1A6',
+            yellow: '#F2A25C',
+            orange: '#F2845C'
+        },
         brand:
             {
                 50: '#e3f8fb',

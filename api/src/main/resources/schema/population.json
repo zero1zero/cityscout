@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "total": {
+      "type": "integer"
+    },
+    "male": {
+      "type": "integer"
+    },
+    "male_under_18": {
+      "type": "integer"
+    },
+    "male_18_to_24": {
+      "type": "integer"
+    },
+    "male_25_to_30": {
+      "type": "integer"
+    },
+    "male_30_to_40": {
+      "type": "integer"
+    },
+    "male_40_to_50": {
+      "type": "integer"
+    },
+    "male_50_to_60": {
+      "type": "integer"
+    },
+    "male_over_60": {
+      "type": "integer"
+    },
+    "female": {
+      "type": "integer"
+    },
+    "female_under_18": {
+      "type": "integer"
+    },
+    "female_18_to_24": {
+      "type": "integer"
+    },
+    "female_25_to_30": {
+      "type": "integer"
+    },
+    "female_30_to_40": {
+      "type": "integer"
+    },
+    "female_40_to_50": {
+      "type": "integer"
+    },
+    "female_50_to_60": {
+      "type": "integer"
+    },
+    "female_over_60": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "total",
+    "male",
+    "male_under_18",
+    "male_18_to_24",
+    "male_25_to_30",
+    "male_30_to_40",
+    "male_40_to_50",
+    "male_50_to_60",
+    "male_over_60",
+    "female",
+    "female_under_18",
+    "female_18_to_24",
+    "female_25_to_30",
+    "female_30_to_40",
+    "female_40_to_50",
+    "female_50_to_60",
+    "female_over_60"
+  ]
+}

@@ -1,12 +1,6 @@
 package app.cityscout.plugins
 
-import io.ktor.server.metrics.dropwizard.*
-import com.codahale.metrics.*
-import io.ktor.server.plugins.callloging.*
-import org.slf4j.event.*
-import io.ktor.server.request.*
 import io.ktor.server.application.*
-import java.util.concurrent.TimeUnit
 
 fun Application.configureMonitoring() {
 //    install(DropwizardMetrics) {

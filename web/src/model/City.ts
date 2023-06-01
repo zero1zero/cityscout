@@ -8,8 +8,13 @@
  * when the generation process is re-run.
  */
 
+import {CityName} from "./CityName";
+import {Population} from "./Population";
+
 export interface City {
-    city: string;
+    name: CityName;
     reason: string;
     img: string;
+    redfin?: string;
+    population?: Population;
 }

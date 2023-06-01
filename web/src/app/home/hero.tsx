@@ -1,78 +1,85 @@
 'use client';
 
-import Head from 'next/head';
-import {Box, Button, Container, createIcon, Heading, Icon, Stack, Text, useColorModeValue,} from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Center,
+    Container,
+    createIcon,
+    Heading,
+    Icon,
+    Stack,
+    Text,
+    useColorModeValue,
+} from '@chakra-ui/react';
 
 export default function CallToActionWithAnnotation() {
     return (
         <>
-            <Head>
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap"
-                    rel="stylesheet"
-                />
-            </Head>
-
-            <Container maxW={'3xl'}>
-                <Stack
-                    as={Box}
-                    textAlign={'center'}
-                    spacing={{base: 8, md: 14}}
-                    py={{base: 20, md: 36}}>
-                    <Heading
-                        fontWeight={600}
-                        fontSize={{base: '2xl', sm: '4xl', md: '6xl'}}
-                        lineHeight={'110%'}>
-                        Make money from <br/>
-                        <Text as={'span'} color={'green.400'}>
-                            your audience
-                        </Text>
-                    </Heading>
-                    <Text color={'gray.500'}>
-                        Monetize your content by charging your most loyal readers and reward
-                        them loyalty points. Give back to your loyal readers by granting
-                        them access to your pre-releases and sneak-peaks.
-                    </Text>
+            <Center
+                h='100vh'
+            >
+                <Container maxW={'5xl'}>
                     <Stack
-                        direction={'column'}
-                        spacing={3}
-                        align={'center'}
-                        alignSelf={'center'}
-                        position={'relative'}>
-                        <Button
-                            bg={'brand.400'}
-                            rounded={'full'}
-                            px={6}
-                            _hover={{
-                                bg: 'green.500',
-                            }}>
-                            Get Started
-                        </Button>
-                        <Button variant={'link'} colorScheme={'blue'} size={'sm'}>
-                            Learn more
-                        </Button>
-                        <Box>
-                            <Icon
-                                as={Arrow}
-                                color={useColorModeValue('gray.800', 'gray.300')}
-                                w={71}
-                                position={'absolute'}
-                                right={-71}
-                                top={'10px'}
-                            />
-                            <Text
-                                fontSize={'lg'}
-                                fontFamily={'Caveat'}
-                                position={'absolute'}
-                                right={'-125px'}
-                                top={'-15px'}
-                                transform={'rotate(10deg)'}>
-                                Starting at $15/mo
+                        as={Box}
+                        textAlign={'center'}
+                        spacing={{base: 8, md: 14}}
+                        py={{base: 20, md: 36}}>
+                        <Heading
+                            fontWeight={600}
+                            fontSize={{base: '2xl', sm: '4xl', md: '6xl'}}
+                            lineHeight={'110%'}>
+                            Find your next destination city<br/>
+                            <Text as={'span'} color={'green.400'}>
+                                on your terms
                             </Text>
-                        </Box>
+                        </Heading>
+                        <Text color={'black'}>
+                            Monetize your content by charging your most loyal readers and reward
+                            them loyalty points. Give back to your loyal readers by granting
+                            them access to your pre-releases and sneak-peaks.
+                        </Text>
+                        <Stack
+                            direction={'column'}
+                            spacing={3}
+                            align={'center'}
+                            alignSelf={'center'}
+                            position={'relative'}>
+                            <Button
+                                bg={'brand.400'}
+                                rounded={'full'}
+                                px={6}
+                                _hover={{
+                                    bg: 'green.500',
+                                }}>
+                                Get Started
+                            </Button>
+                            <Button variant={'link'} colorScheme={'blue'} size={'sm'}>
+                                Learn more
+                            </Button>
+                            <Box>
+                                <Icon
+                                    as={Arrow}
+                                    color={useColorModeValue('grey.800', 'grey.300')}
+                                    w={71}
+                                    position={'absolute'}
+                                    right={-71}
+                                    top={'10px'}
+                                />
+                                <Text
+                                    fontSize={'lg'}
+                                    fontFamily={'Caveat'}
+                                    position={'absolute'}
+                                    right={'-125px'}
+                                    top={'-15px'}
+                                    transform={'rotate(10deg)'}>
+                                    Starting at $15/mo
+                                </Text>
+                            </Box>
+                        </Stack>
                     </Stack>
-                </Stack>
-            </Container>
+                </Container>
+            </Center>
         </>
     );
 }

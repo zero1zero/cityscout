@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<svg width="27" height="27" xmlns="http://www.w3.org/2000/svg" version="1.0">
+    <g class="layer">
+        <title>Layer 1</title>
+        <g class="imagesvg" id="svg_8">
+            <path class="image-rect" d="m0,0l27.12,0l0,27.12l-27.12,0l0,-27.12z" fill="none" id="svg_9"/>
+            <g id="svg_1">
+                <svg class="image-svg-svg primary" filter="url(#a)" height="27.12" id="svg_10" width="27.12" x="0"
+                     y="0">
+                    <g id="svg_2">
+                        <svg id="svg_11" viewBox="0.818 0.375 98.807 98.808" xmlns="http://www.w3.org/2000/svg">
+                            <path d="m50.22,0.38c-27.24,0 -49.4,22.16 -49.4,49.4s22.16,49.4 49.4,49.4s49.41,-22.16 49.41,-49.4s-22.17,-49.4 -49.41,-49.4zm0,85.63c-19.98,0 -36.23,-16.26 -36.23,-36.23s16.25,-36.23 36.23,-36.23s36.23,16.25 36.23,36.23s-16.25,36.23 -36.23,36.23z"
+                                  id="svg_12"/>
+                            <path d="m50.22,26.73c-12.72,0 -23.05,10.34 -23.05,23.05s10.33,23.06 23.05,23.06s23.05,-10.34 23.05,-23.05s-10.34,-23.06 -23.05,-23.06zm0,32.93c-5.45,0 -9.88,-4.43 -9.88,-9.88s4.44,-9.88 9.88,-9.88s9.88,4.43 9.88,9.88s-4.44,9.88 -9.88,9.88z"
+                                  id="svg_13"/>
+                        </svg>
+                    </g>
+                </svg>
+            </g>
+            <defs transform="translate(-0.00498962) translate(-1) translate(0, -1) translate(2, 1) translate(-115) translate(191.325, 111.438) translate(-1.32001, -1.438) translate(-76, -110)">
+                <filter id="a">
+                    <feColorMatrix class="icon-fecolormatrix"
+                                   values="0 0 0 0 0.19921875 0 0 0 0 0.19921875 0 0 0 0 0.19921875 0 0 0 1 0"/>
+                </filter>
+            </defs>
+        </g>
+    </g>
+</svg>

@@ -3,18 +3,24 @@
   "title": "Generated schema for Root",
   "type": "object",
   "properties": {
-    "city": {
-      "type": "string"
+    "name": {
+      "$ref": "city-name.json"
     },
     "reason": {
       "type": "string"
     },
     "img": {
       "type": "string"
+    },
+    "redfin": {
+      "type": "string"
+    },
+    "population": {
+      "$ref": "population.json"
     }
   },
   "required": [
-    "city",
+    "name",
     "reason",
     "img"
   ]

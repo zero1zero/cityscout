@@ -1,7 +1,25 @@
-html {
-    height: 100%;
+html, body {
+    /*background: #317DA2ff;*/
 }
 
-body {
-    background: #edf3f8;
+#bg {
+    height: 100vh;
+    background: linear-gradient(to bottom, #FFFFFF00 40%, #71a4a9 100%), url('/bg.jpg');
+    background-size: cover;
+    width: 100%;
+}
+
+#bg-simple {
+    background: url('/bg.jpg');
+    background-size: cover;
+}
+
+#bg-bottom {
+    /*background: var(--chakra-colors-brand-400);*/
+    background: linear-gradient(180deg, rgba(113, 164, 169, 1) 40%, #FFAF58 100%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: -99999;
 }

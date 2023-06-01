@@ -15,7 +15,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Generated
 data class City(
-    val city: String,
+    val name: CityName,
     val reason: String,
-    val img: String
+    val img: String,
+    val redfin: String? = null,
+    val population: Population? = null
 )
