@@ -107,6 +107,7 @@ export default function Home() {
                     <Flex
                         flexDirection='column'
                         alignItems='center'
+                        maxW='50%'
                         pb={20}
                     >
                         {cities.cities.map((city, index) => (

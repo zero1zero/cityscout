@@ -15,13 +15,27 @@
     "redfin": {
       "type": "string"
     },
+    "lat": {
+      "type": "number"
+    },
+    "lon": {
+      "type": "number"
+    },
     "population": {
       "$ref": "population.json"
+    },
+    "weather": {
+      "$ref": "weather.json"
     }
   },
   "required": [
     "name",
     "reason",
-    "img"
+    "img",
+    "redfin",
+    "lat",
+    "lon",
+    "population",
+    "weather"
   ]
 }

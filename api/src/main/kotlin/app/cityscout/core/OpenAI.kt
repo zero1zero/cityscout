@@ -1,7 +1,5 @@
 package app.cityscout.core
 
-import app.cityscout.model.Cities
-import app.cityscout.model.City
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatCompletionRequest
 import com.aallam.openai.api.chat.ChatMessage
@@ -16,8 +14,13 @@ const val special = "⁜"
 
 class OpenAI {
 
-    private val openAI = OpenAI(OpenAIConfig("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", timeout = Timeout(
-        Duration.INFINITE)))
+    private val openAI = OpenAI(
+        OpenAIConfig(
+            "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", timeout = Timeout(
+                Duration.INFINITE
+            )
+        )
+    )
 
     data class CityAndReason(
         val city: String,
@@ -25,8 +28,9 @@ class OpenAI {
     )
 
     @OptIn(BetaOpenAI::class)
-    suspend fun go(criterion : List<String>): List<CityAndReason> {
-        val content = "List 3 cities that match all these attributes: \n" + criterion.joinToString("\n") + ". Give 1 paragraph reasoning for each."
+    suspend fun go(criterion: List<String>): List<CityAndReason> {
+        val content =
+            "List 3 cities that match all these attributes: \npopulation greater than 200\n" + criterion.joinToString("\n") + ". Give 1 paragraph reasoning for each. If you can't meet one of the criteria, explain why."
 
         print(content)
 
@@ -46,14 +50,18 @@ class OpenAI {
             return emptyList()
         }
 
-        val cities = response
-            .replace("\n\n", "\n") //trim empty lines
-            .split("\n")
+        return parseReply(response)
+    }
 
+    private val cityRegex = "\\d[.)]?([\\w,\\s]+)[-:]\\s?\\n?(.+)\\n?\$"
 
-        return cities.stream()
-            .map { it.replace(Regex("\\d. "), "") }
-            .map { it.split(" - ", ": ") }
+    fun parseReply(response: String): List<CityAndReason> {
+        return Regex(cityRegex, RegexOption.MULTILINE).findAll(response)
+            .map { it ->
+                listOf(it.groupValues[1], it.groupValues[2]).stream()
+                    .map { it.trim() }
+                    .toList()
+            }
             .map { CityAndReason(it[0], it[1]) }
             .toList()
     }

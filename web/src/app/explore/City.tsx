@@ -10,597 +10,174 @@ import {
     List,
     ListIcon,
     ListItem,
-    Stat,
-    StatArrow,
-    StatHelpText,
-    StatLabel,
-    StatNumber,
     Tab,
     TabList,
     TabPanel,
     TabPanels,
     Tabs,
     Text,
+    Tooltip,
     VStack
 } from "@chakra-ui/react";
-import {FiExternalLink, FiGlobe, FiUsers} from "react-icons/fi";
+import {FiExternalLink, FiGlobe, FiInfo, FiUsers} from "react-icons/fi";
 import React from "react";
 import {Map} from "@/app/explore/Map";
 import {BarDatum, ResponsiveBar} from "@nivo/bar";
 import {ResponsivePie} from "@nivo/pie";
-import {ResponsiveTreeMap} from "@nivo/treemap";
+import {animated, SpringValue, to} from '@react-spring/web'
+import {
+    ComputedNodeWithoutStyles,
+    DefaultTreeMapDatum,
+    htmlNodeTransform,
+    NodeProps,
+    ResponsiveTreeMapHtml
+} from "@nivo/treemap";
 import Forecast from "@/app/explore/city/Forecast";
 import {ResponsiveLine} from "@nivo/line";
+import CityStat from "@/app/explore/city/Stat";
+import {useTheme} from "@nivo/core";
+
+export const SourceTip = () => {
+    return (
+        <Tooltip label="These values were derived from 2019-2021 US Census data. Visit the About page for more info"
+                 placement='right-start'>
+            <Text as='sup'>
+                <FiInfo/>
+            </Text>
+        </Tooltip>
+
+    )
+}
 
 export default function CityCard({city}: { city: City }) {
 
-    const YearCite = () => {
-        return (
-            <></>
-            // <Text as='sup'>
-            //     <Link href='#'>
-            //         <FiInfo />
-            //     </Link>
-            // </Text>
-        )
-    }
 
     const populationData: BarDatum[] = [
         {
             // id: `${city.name.slug}-pop-un-18}`,
-            female: city.population!!.female_under_18,
-            male: -city.population!!.male_under_18,
+            Female: city.population.ages.female_under_18 / city.population.ages.female,
+            Male: -city.population.ages.male_under_18 / city.population.ages.male,
             population: "Under 18"
         },
         {
             // id: `${city.name.slug}-pop-18-24}`,
-            female: city.population!!.female_18_to_24,
-            male: -city.population!!.male_18_to_24,
+            Female: city.population.ages.female_18_to_24 / city.population.ages.female,
+            Male: -city.population.ages.male_18_to_24 / city.population.ages.male,
             population: "18 to 24"
         },
         {
             // id: `${city.name.slug}-pop-25-30}`,
-            female: city.population!!.female_25_to_30,
-            male: -city.population!!.male_25_to_30,
+            Female: city.population.ages.female_25_to_29 / city.population.ages.female,
+            Male: -city.population.ages.male_25_to_29 / city.population.ages.male,
             population: "25 to 30"
         },
         {
             // id: `${city.name.slug}-pop-30-40}`,
-            female: city.population!!.female_30_to_40,
-            male: -city.population!!.male_30_to_40,
+            Female: city.population.ages.female_30_to_39 / city.population.ages.female,
+            Male: -city.population.ages.male_30_to_39 / city.population.ages.male,
             population: "30 to 40"
         },
         {
             // id: `${city.name.slug}-pop-40-50}`,
-            female: city.population!!.female_40_to_50,
-            male: -city.population!!.male_40_to_50,
+            Female: city.population.ages.female_40_to_49 / city.population.ages.female,
+            Male: -city.population.ages.male_40_to_49 / city.population.ages.male,
             population: "40 to 50"
         },
         {
             // id: `${city.name.slug}-pop-50-60}`,
-            female: city.population!!.female_50_to_60,
-            male: -city.population!!.male_50_to_60,
+            Female: city.population.ages.female_50_to_59 / city.population.ages.female,
+            Male: -city.population.ages.male_50_to_59 / city.population.ages.male,
             population: "50 to 60"
         },
         {
             // id: `${city.name.slug}-pop-over-60}`,
-            female: city.population!!.female_over_60,
-            male: -city.population!!.male_over_60,
+            Female: city.population.ages.female_60_and_over / city.population.ages.female,
+            Male: -city.population.ages.male_60_and_over / city.population.ages.male,
             population: "Over 60"
         },
     ]
 
-    const commuteData = [
-        {
-            "id": "Drove Alone",
-            "label": "Drove Alone",
-            "value": 536,
-            "color": "hsl(215, 70%, 50%)"
-        },
-        {
-            "id": "Carpool",
-            "label": "Carpool",
-            "value": 525,
-            "color": "hsl(112, 70%, 50%)"
-        },
-        {
-            "id": "Public Transport",
-            "label": "Public Transportation",
-            "value": 181,
-            "color": "hsl(229, 70%, 50%)"
-        },
-        {
-            "id": "Walked",
-            "label": "Walked",
-            "value": 520,
-            "color": "hsl(251, 70%, 50%)"
-        },
-        {
-            "id": "WFH",
-            "label": "Worked from Home",
-            "value": 156,
-            "color": "hsl(205, 70%, 50%)"
-        },
-        {
-            "id": "Other",
-            "label": "Other",
-            "value": 156,
-            "color": "hsl(205, 70%, 50%)"
-        }
-    ]
-    const occupationData = {
-        "name": "nivo",
-        "color": "hsl(327, 70%, 50%)",
-        "children": [
-            {
-                "name": "viz",
-                "color": "hsl(241, 70%, 50%)",
-                "children": [
-                    {
-                        "name": "stack",
-                        "color": "hsl(154, 70%, 50%)",
-                        "children": [
-                            {
-                                "name": "cchart",
-                                "color": "hsl(6, 70%, 50%)",
-                                "loc": 25525
-                            },
-                            {
-                                "name": "xAxis",
-                                "color": "hsl(344, 70%, 50%)",
-                                "loc": 111528
-                            },
-                            {
-                                "name": "yAxis",
-                                "color": "hsl(357, 70%, 50%)",
-                                "loc": 155017
-                            },
-                            {
-                                "name": "layers",
-                                "color": "hsl(226, 70%, 50%)",
-                                "loc": 134984
-                            }
-                        ]
-                    },
-                    {
-                        "name": "ppie",
-                        "color": "hsl(351, 70%, 50%)",
-                        "children": [
-                            {
-                                "name": "chart",
-                                "color": "hsl(195, 70%, 50%)",
-                                "children": [
-                                    {
-                                        "name": "pie",
-                                        "color": "hsl(6, 70%, 50%)",
-                                        "children": [
-                                            {
-                                                "name": "outline",
-                                                "color": "hsl(170, 70%, 50%)",
-                                                "loc": 24991
-                                            },
-                                            {
-                                                "name": "slices",
-                                                "color": "hsl(203, 70%, 50%)",
-                                                "loc": 51215
-                                            },
-                                            {
-                                                "name": "bbox",
-                                                "color": "hsl(225, 70%, 50%)",
-                                                "loc": 24004
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "donut",
-                                        "color": "hsl(209, 70%, 50%)",
-                                        "loc": 181742
-                                    },
-                                    {
-                                        "name": "gauge",
-                                        "color": "hsl(230, 70%, 50%)",
-                                        "loc": 97602
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "legends",
-                                "color": "hsl(124, 70%, 50%)",
-                                "loc": 188227
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "name": "colors",
-                "color": "hsl(113, 70%, 50%)",
-                "children": [
-                    {
-                        "name": "rgb",
-                        "color": "hsl(74, 70%, 50%)",
-                        "loc": 40697
-                    },
-                    {
-                        "name": "hsl",
-                        "color": "hsl(160, 70%, 50%)",
-                        "loc": 56290
-                    }
-                ]
-            },
-            {
-                "name": "utils",
-                "color": "hsl(93, 70%, 50%)",
-                "children": [
-                    {
-                        "name": "randomize",
-                        "color": "hsl(145, 70%, 50%)",
-                        "loc": 81000
-                    },
-                    {
-                        "name": "resetClock",
-                        "color": "hsl(250, 70%, 50%)",
-                        "loc": 149299
-                    },
-                    {
-                        "name": "noop",
-                        "color": "hsl(245, 70%, 50%)",
-                        "loc": 182735
-                    },
-                    {
-                        "name": "tick",
-                        "color": "hsl(76, 70%, 50%)",
-                        "loc": 110790
-                    },
-                    {
-                        "name": "forceGC",
-                        "color": "hsl(224, 70%, 50%)",
-                        "loc": 106935
-                    },
-                    {
-                        "name": "stackTrace",
-                        "color": "hsl(298, 70%, 50%)",
-                        "loc": 48793
-                    },
-                    {
-                        "name": "dbg",
-                        "color": "hsl(330, 70%, 50%)",
-                        "loc": 188252
-                    }
-                ]
-            },
-            {
-                "name": "generators",
-                "color": "hsl(224, 70%, 50%)",
-                "children": [
-                    {
-                        "name": "address",
-                        "color": "hsl(97, 70%, 50%)",
-                        "loc": 8883
-                    },
-                    {
-                        "name": "city",
-                        "color": "hsl(91, 70%, 50%)",
-                        "loc": 177366
-                    },
-                    {
-                        "name": "animal",
-                        "color": "hsl(219, 70%, 50%)",
-                        "loc": 88787
-                    },
-                    {
-                        "name": "movie",
-                        "color": "hsl(269, 70%, 50%)",
-                        "loc": 122750
-                    },
-                    {
-                        "name": "user",
-                        "color": "hsl(92, 70%, 50%)",
-                        "loc": 100022
-                    }
-                ]
-            },
-            {
-                "name": "set",
-                "color": "hsl(118, 70%, 50%)",
-                "children": [
-                    {
-                        "name": "clone",
-                        "color": "hsl(357, 70%, 50%)",
-                        "loc": 157909
-                    },
-                    {
-                        "name": "intersect",
-                        "color": "hsl(193, 70%, 50%)",
-                        "loc": 161888
-                    },
-                    {
-                        "name": "merge",
-                        "color": "hsl(109, 70%, 50%)",
-                        "loc": 9993
-                    },
-                    {
-                        "name": "reverse",
-                        "color": "hsl(317, 70%, 50%)",
-                        "loc": 11796
-                    },
-                    {
-                        "name": "toArray",
-                        "color": "hsl(69, 70%, 50%)",
-                        "loc": 34335
-                    },
-                    {
-                        "name": "toObject",
-                        "color": "hsl(220, 70%, 50%)",
-                        "loc": 106550
-                    },
-                    {
-                        "name": "fromCSV",
-                        "color": "hsl(63, 70%, 50%)",
-                        "loc": 14029
-                    },
-                    {
-                        "name": "slice",
-                        "color": "hsl(228, 70%, 50%)",
-                        "loc": 155033
-                    },
-                    {
-                        "name": "append",
-                        "color": "hsl(319, 70%, 50%)",
-                        "loc": 43679
-                    },
-                    {
-                        "name": "prepend",
-                        "color": "hsl(298, 70%, 50%)",
-                        "loc": 24075
-                    },
-                    {
-                        "name": "shuffle",
-                        "color": "hsl(261, 70%, 50%)",
-                        "loc": 141795
-                    },
-                    {
-                        "name": "pick",
-                        "color": "hsl(24, 70%, 50%)",
-                        "loc": 154414
-                    },
-                    {
-                        "name": "plouc",
-                        "color": "hsl(55, 70%, 50%)",
-                        "loc": 5562
-                    }
-                ]
-            },
-            {
-                "name": "text",
-                "color": "hsl(358, 70%, 50%)",
-                "children": [
-                    {
-                        "name": "trim",
-                        "color": "hsl(115, 70%, 50%)",
-                        "loc": 88358
-                    },
-                    {
-                        "name": "slugify",
-                        "color": "hsl(288, 70%, 50%)",
-                        "loc": 56947
-                    },
-                    {
-                        "name": "snakeCase",
-                        "color": "hsl(29, 70%, 50%)",
-                        "loc": 70030
-                    },
-                    {
-                        "name": "camelCase",
-                        "color": "hsl(240, 70%, 50%)",
-                        "loc": 32449
-                    },
-                    {
-                        "name": "repeat",
-                        "color": "hsl(116, 70%, 50%)",
-                        "loc": 59668
-                    },
-                    {
-                        "name": "padLeft",
-                        "color": "hsl(329, 70%, 50%)",
-                        "loc": 198234
-                    },
-                    {
-                        "name": "padRight",
-                        "color": "hsl(23, 70%, 50%)",
-                        "loc": 594
-                    },
-                    {
-                        "name": "sanitize",
-                        "color": "hsl(238, 70%, 50%)",
-                        "loc": 74541
-                    },
-                    {
-                        "name": "ploucify",
-                        "color": "hsl(37, 70%, 50%)",
-                        "loc": 65561
-                    }
-                ]
-            },
-            {
-                "name": "misc",
-                "color": "hsl(266, 70%, 50%)",
-                "children": [
-                    {
-                        "name": "greetings",
-                        "color": "hsl(123, 70%, 50%)",
-                        "children": [
-                            {
-                                "name": "hey",
-                                "color": "hsl(334, 70%, 50%)",
-                                "loc": 159595
-                            },
-                            {
-                                "name": "HOWDY",
-                                "color": "hsl(107, 70%, 50%)",
-                                "loc": 97025
-                            },
-                            {
-                                "name": "aloha",
-                                "color": "hsl(301, 70%, 50%)",
-                                "loc": 97012
-                            },
-                            {
-                                "name": "AHOY",
-                                "color": "hsl(14, 70%, 50%)",
-                                "loc": 47118
-                            }
-                        ]
-                    },
-                    {
-                        "name": "other",
-                        "color": "hsl(159, 70%, 50%)",
-                        "loc": 161445
-                    },
-                    {
-                        "name": "path",
-                        "color": "hsl(302, 70%, 50%)",
-                        "children": [
-                            {
-                                "name": "pathA",
-                                "color": "hsl(300, 70%, 50%)",
-                                "loc": 82616
-                            },
-                            {
-                                "name": "pathB",
-                                "color": "hsl(203, 70%, 50%)",
-                                "children": [
-                                    {
-                                        "name": "pathB1",
-                                        "color": "hsl(64, 70%, 50%)",
-                                        "loc": 121815
-                                    },
-                                    {
-                                        "name": "pathB2",
-                                        "color": "hsl(50, 70%, 50%)",
-                                        "loc": 193695
-                                    },
-                                    {
-                                        "name": "pathB3",
-                                        "color": "hsl(276, 70%, 50%)",
-                                        "loc": 34152
-                                    },
-                                    {
-                                        "name": "pathB4",
-                                        "color": "hsl(16, 70%, 50%)",
-                                        "loc": 148361
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "pathC",
-                                "color": "hsl(242, 70%, 50%)",
-                                "children": [
-                                    {
-                                        "name": "pathC1",
-                                        "color": "hsl(122, 70%, 50%)",
-                                        "loc": 54068
-                                    },
-                                    {
-                                        "name": "pathC2",
-                                        "color": "hsl(347, 70%, 50%)",
-                                        "loc": 86635
-                                    },
-                                    {
-                                        "name": "pathC3",
-                                        "color": "hsl(144, 70%, 50%)",
-                                        "loc": 130598
-                                    },
-                                    {
-                                        "name": "pathC4",
-                                        "color": "hsl(238, 70%, 50%)",
-                                        "loc": 136709
-                                    },
-                                    {
-                                        "name": "pathC5",
-                                        "color": "hsl(57, 70%, 50%)",
-                                        "loc": 172962
-                                    },
-                                    {
-                                        "name": "pathC6",
-                                        "color": "hsl(277, 70%, 50%)",
-                                        "loc": 20015
-                                    },
-                                    {
-                                        "name": "pathC7",
-                                        "color": "hsl(329, 70%, 50%)",
-                                        "loc": 137132
-                                    },
-                                    {
-                                        "name": "pathC8",
-                                        "color": "hsl(227, 70%, 50%)",
-                                        "loc": 48780
-                                    },
-                                    {
-                                        "name": "pathC9",
-                                        "color": "hsl(331, 70%, 50%)",
-                                        "loc": 6671
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-
-    const divergingCommonProps = {
-        data: populationData,
-        indexBy: 'population',
-        enableGridX: false,
-        enableGridY: true,
-        padding: 0.3,
-        axisLeft: {
-            tickSize: 20,
-            tickPadding: 5,
-        },
-        markers: [
-            {
-                axis: 'x',
-                value: 0,
-                lineStyle: {strokeOpacity: 0},
-                textStyle: {fill: '#F2913D'},
-                legend: 'Male',
-                legendPosition: 'top-right',
-                legendOffsetY: -20
-            } as const,
-            {
-                axis: 'x',
-                value: 0,
-                // lineStyle: { stroke: '#D9695F', strokeWidth: 1 },
-                textStyle: {fill: '#8C4A81'},
-                legend: 'Female',
-                legendPosition: 'top-left',
-                legendOffsetY: -20
-            } as const,
-        ],
-    }
-
-
-    const DivergingStacked = () => {
+    const AgeDistributionBar = () => {
+        // @ts-ignore
+        // @ts-ignore
         return (
             <ResponsiveBar
-                {...divergingCommonProps}
+                data={populationData}
+                colors={{scheme: 'set2'}}
+                indexBy='population'
+                keys={['Male', 'Female']}
+                enableGridX={false}
+                enableGridY={true}
+                padding={0.3}
+                label={(d) => `${new Intl.NumberFormat('en-us', {maximumFractionDigits: 1}).format(Math.abs(d.value!! * 100))}%`}
+                axisLeft={{
+                    tickSize: 20,
+                    tickPadding: 5,
+                }}
+                markers={[
+                    {
+                        axis: 'x',
+                        value: 0,
+                        lineStyle: {strokeOpacity: 0},
+                        textStyle: {
+                            fill: '#F2913D',
+                        },
+                        legend: 'Male',
+                        legendPosition: 'top-right',
+                        // @ts-ignore
+                        legendOffsetY: -20
+                    },
+                    {
+                        axis: 'x',
+                        value: 0,
+                        // lineStyle={ stroke='#D9695F', strokeWidth=1 },
+                        textStyle: {fill: '#8C4A81'},
+                        legend: 'Female',
+                        legendPosition: 'top-left',
+                        // @ts-ignore
+                        legendOffsetY: -20
+                    }
+                ]}
                 margin={{top: 30, right: 0, bottom: 0, left: 72}}
                 layout="horizontal"
-                keys={['male', 'female']}
                 // colors={['#8C4A81', '#F2913D', '#D9695F', '#e25c3b']}
+                tooltip={(node) => {
+                    return (
+                        <Text bg='white' p={2} borderWidth={2} rounded="lg" shadow="lg">
+                            {new Intl.NumberFormat('en-us', {maximumFractionDigits: 1})
+                                .format(Math.abs(node.value * 100))}% - {node.label}
+                        </Text>
+                    )
+                }}
                 valueFormat={v => new Intl.NumberFormat('en-us').format(Math.abs(v))}
             />
         )
     }
 
     const CommutePie = () => {
+        const commuteData = city.population.commute
+            .map((commute) => {
+                return {
+                    "id": commute.name,
+                    "label": commute.name,
+                    "value": commute.count / city.population.commute_all
+                    // "color": "hsl(215, 70%, 50%)"
+                }
+            });
         return (
             <ResponsivePie
                 data={commuteData}
-                margin={{top: 0, right: 100, bottom: 0, left: 100}}
+                colors={{scheme: 'set2'}}
+                margin={{top: 0, right: 10, bottom: 0, left: 10}}
+                arcLabel={(item) => `${item.id}`}
+                tooltip={(node) => {
+                    return (
+                        <Text bg='white' p={2} borderWidth={2} rounded="lg" shadow="lg">
+                            {new Intl.NumberFormat('en-us', {maximumFractionDigits: 1})
+                                .format(node.datum.value * 100)}% - {node.datum.label}
+                        </Text>
+                    )
+                }}
                 innerRadius={0.3}
                 padAngle={0.7}
                 cornerRadius={3}
@@ -615,258 +192,225 @@ export default function CityCard({city}: { city: City }) {
                         ]
                     ]
                 }}
-                arcLinkLabelsSkipAngle={10}
+                enableArcLinkLabels={false}
+                arcLinkLabelsSkipAngle={20}
                 arcLinkLabelsTextColor="#333333"
                 arcLinkLabelsThickness={2}
                 arcLinkLabelsColor={{from: 'color'}}
-                arcLabelsSkipAngle={10}
+                arcLabelsSkipAngle={30}
             />
+        )
+    }
+
+    const occupationData = {
+        "id": "whatever",
+        "name": "nivo",
+        "children": city.population.occupations.map((occupation) => {
+            return {
+                "id": occupation.name,
+                "name": occupation.name,
+                "count": occupation.count / city.population.occupation_all
+            }
+        })
+    }
+
+    const breakCell = (node: Omit<ComputedNodeWithoutStyles<DefaultTreeMapDatum>, 'label' | 'parentLabel'>): string => {
+        const perc = node.data.value!!
+
+        const realw = node.labelRotation < 0 ? node.height : node.width
+
+        const words = node.data.id.split(" ").slice(0, (node.width / 50))
+
+        if (words.length != node.data.id.split(" ").length) {
+            return words.join(" ") + "..."
+        }
+
+        return words.join(" ")
+    }
+
+    /**
+     * Pulled mostly from https://github.com/plouc/nivo/blob/master/packages/treemap/src/TreeMapHtmlNode.tsx
+     */
+    function CustomNode({
+                            node,
+                            enableLabel,
+                            labelSkipSize,
+                            borderWidth,
+                            animatedProps
+                        }: NodeProps<DefaultTreeMapDatum>) {
+        const theme = useTheme()
+
+        if (node.isParent) {
+            return <></>
+        }
+
+        const htmlLabelTransform = (
+            x: SpringValue<number>,
+            y: SpringValue<number>,
+            rotation: SpringValue<number>
+        ) => to([x, y, rotation], (x, y, rotation) => `translate(${x}px,${y}px) rotate(${rotation}deg)`)
+
+        const showLabel =
+            enableLabel &&
+            node.isLeaf &&
+            (labelSkipSize === 0 || Math.min(node.width, node.height) > labelSkipSize)
+
+        return (
+            <animated.div
+                data-testid={`node.${node.id}`}
+                id={node.path.replace(/[^\w]/gi, '-')}
+                style={{
+                    boxSizing: 'border-box',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    transform: htmlNodeTransform(animatedProps.x, animatedProps.y),
+                    width: animatedProps.width,
+                    height: animatedProps.height,
+                    borderWidth,
+                    borderStyle: 'solid',
+                    borderColor: node.borderColor,
+                    overflow: 'hidden',
+                }}
+            >
+                <animated.div
+                    style={{
+                        boxSizing: 'border-box',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        opacity: node.opacity,
+                        width: animatedProps.width,
+                        height: animatedProps.height,
+                        background: animatedProps.color,
+                    }}
+                    onMouseEnter={node.onMouseEnter}
+                    onMouseMove={node.onMouseMove}
+                    onMouseLeave={node.onMouseLeave}
+                    onClick={node.onClick}
+                />
+                {showLabel && (
+                    <animated.span
+                        data-testid={`label.${node.id}`}
+                        style={{
+                            ...theme.labels.text,
+                            position: 'absolute',
+                            display: 'flex',
+                            // top: -5,
+                            // left: -5,
+                            padding: '6px',
+                            textOverflow: 'ellipsis',
+                            left: '-50%',
+                            right: '50%',
+                            top: '-50%',
+                            bottom: '50%',
+                            // width: 10,
+                            // height: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            // whiteSpace: 'nowrap',
+                            color: node.labelTextColor,
+                            transformOrigin: 'center center',
+                            transform: htmlLabelTransform(
+                                animatedProps.labelX,
+                                animatedProps.labelY,
+                                animatedProps.labelRotation
+                            ),
+                            opacity: animatedProps.labelOpacity,
+                            pointerEvents: 'none',
+                        }}
+                    >
+                        {node.label}
+                    </animated.span>
+                )}
+            </animated.div>
         )
     }
 
     const OccupationHeatmap = () => {
         return (
-            <ResponsiveTreeMap
+            <ResponsiveTreeMapHtml
                 data={occupationData}
+                colors={{scheme: 'set2'}}
                 identity="name"
-                value="loc"
-                valueFormat=".02s"
+                value="count"
+                nodeComponent={CustomNode}
                 margin={{top: 10, right: 10, bottom: 10, left: 10}}
-                labelSkipSize={12}
-                labelTextColor={{
-                    from: 'color',
-                    modifiers: [
-                        [
-                            'darker',
-                            1.2
-                        ]
-                    ]
+                label={(node) => node.id}
+                tooltip={(node) => {
+                    return (
+                        <Text bg='white' p={2} borderWidth={2} rounded="lg" shadow="lg">
+                            {new Intl.NumberFormat('en-us', {maximumFractionDigits: 1})
+                                .format(node.node.value * 100)}% - {node.node.id}
+                        </Text>
+                    )
                 }}
-                parentLabelPosition="left"
-                parentLabelTextColor={{
-                    from: 'color',
-                    modifiers: [
-                        [
-                            'darker',
-                            2
-                        ]
-                    ]
-                }}
-                borderColor={{
-                    from: 'color',
-                    modifiers: [
-                        [
-                            'darker',
-                            0.1
-                        ]
-                    ]
-                }}
+                enableParentLabel={false}
+                labelSkipSize={15}
             />
         )
     }
 
     const weatherData = [
         {
-            "id": "average",
-            "color": "hsl(1, 70%, 50%)",
-            "data": [
-                {
-                    "x": "plane",
-                    "y": 26
-                },
-                {
-                    "x": "helicopter",
-                    "y": 235
-                },
-                {
-                    "x": "boat",
-                    "y": 119
-                },
-                {
-                    "x": "train",
-                    "y": 160
-                },
-                {
-                    "x": "subway",
-                    "y": 147
-                },
-                {
-                    "x": "bus",
-                    "y": 116
-                },
-                {
-                    "x": "car",
-                    "y": 198
-                },
-                {
-                    "x": "moto",
-                    "y": 216
-                },
-                {
-                    "x": "bicycle",
-                    "y": 134
-                },
-                {
-                    "x": "horse",
-                    "y": 271
-                },
-                {
-                    "x": "skateboard",
-                    "y": 28
-                },
-                {
-                    "x": "others",
-                    "y": 26
+            "id": "Average",
+            "data": city.weather.monthly_means.month.map((month, index) => {
+                return {
+                    "x": month,
+                    "y": city.weather.monthly_means.temperature_2m_mean[index]
                 }
-            ]
+            })
         },
         {
-            "id": "low",
-            "color": "hsl(271, 70%, 50%)",
-            "data": [
-                {
-                    "x": "plane",
-                    "y": 27
-                },
-                {
-                    "x": "helicopter",
-                    "y": 265
-                },
-                {
-                    "x": "boat",
-                    "y": 54
-                },
-                {
-                    "x": "train",
-                    "y": 279
-                },
-                {
-                    "x": "subway",
-                    "y": 119
-                },
-                {
-                    "x": "bus",
-                    "y": 114
-                },
-                {
-                    "x": "car",
-                    "y": 237
-                },
-                {
-                    "x": "moto",
-                    "y": 247
-                },
-                {
-                    "x": "bicycle",
-                    "y": 27
-                },
-                {
-                    "x": "horse",
-                    "y": 276
-                },
-                {
-                    "x": "skateboard",
-                    "y": 89
-                },
-                {
-                    "x": "others",
-                    "y": 237
+            "id": "High",
+            "data": city.weather.monthly_means.month.map((month, index) => {
+                return {
+                    "x": month,
+                    "y": city.weather.monthly_means.temperature_2m_max[index]
                 }
-            ]
+            })
         },
         {
-            "id": "high",
-            "color": "hsl(43, 70%, 50%)",
-            "data": [
-                {
-                    "x": "plane",
-                    "y": 40
-                },
-                {
-                    "x": "helicopter",
-                    "y": 16
-                },
-                {
-                    "x": "boat",
-                    "y": 288
-                },
-                {
-                    "x": "train",
-                    "y": 155
-                },
-                {
-                    "x": "subway",
-                    "y": 90
-                },
-                {
-                    "x": "bus",
-                    "y": 33
-                },
-                {
-                    "x": "car",
-                    "y": 83
-                },
-                {
-                    "x": "moto",
-                    "y": 83
-                },
-                {
-                    "x": "bicycle",
-                    "y": 90
-                },
-                {
-                    "x": "horse",
-                    "y": 165
-                },
-                {
-                    "x": "skateboard",
-                    "y": 194
-                },
-                {
-                    "x": "others",
-                    "y": 108
+            "id": "Low",
+            "data": city.weather.monthly_means.month.map((month, index) => {
+                return {
+                    "x": month,
+                    "y": city.weather.monthly_means.temperature_2m_min[index]
                 }
-            ]
-        },
-    ]
+            })
+        }
+    ];
 
     const WeatherTrend = () => (
         <ResponsiveLine
             data={weatherData}
+            colors={{scheme: 'set2'}}
             margin={{top: 20, right: 110, bottom: 50, left: 60}}
             xScale={{type: 'point'}}
             yScale={{
                 type: 'linear',
                 min: 'auto',
                 max: 'auto',
-                stacked: true,
-                reverse: false
             }}
-            yFormat=" >-.2f"
-            curve="cardinal"
-            axisTop={null}
-            axisRight={null}
+            tooltip={(node) => {
+                return (
+                    <Text bg='white' p={2} borderWidth={2} rounded="lg" shadow="lg">
+                        {node.point.data.x as string} - {node.point.serieId} - {new Intl.NumberFormat('en-us', {maximumFractionDigits: 1}).format(node.point.data.y as number)}°
+                    </Text>
+                )
+            }}
+            curve="monotoneX"
             axisBottom={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: 'transportation',
-                legendOffset: 36,
-                legendPosition: 'middle'
+                tickPadding: 20,
+                format: (value) => value.slice(0, 3)
             }}
             axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: 'count',
-                legendOffset: -40,
-                legendPosition: 'middle'
+                format: (value) => `${value}°`
             }}
             pointSize={10}
             pointColor={{theme: 'background'}}
             pointBorderWidth={2}
-            pointBorderColor={{from: 'serieColor'}}
-            pointLabelYOffset={-12}
+            // pointLabelYOffset={-12}
             useMesh={true}
             legends={[
                 {
@@ -905,57 +449,15 @@ export default function CityCard({city}: { city: City }) {
                     justifyContent='space-between'
                     alignItems='center'
                     mb={4}>
-                    <Stat
-                        minW='33%'>
-                        <StatLabel>Population</StatLabel>
-                        <StatNumber>{new Intl.NumberFormat('en-us').format(city.population!!.total)}</StatNumber>
-                        <StatHelpText>
-                            <StatArrow type='increase'/>
-                            23.36%
-                        </StatHelpText>
-                    </Stat>
-                    <Stat
-                        minW='33%'>
-                        <StatLabel>Median Home Price</StatLabel>
-                        <StatNumber>$250,000</StatNumber>
-                        <StatHelpText>
-                            <StatArrow type='increase'/>
-                            23.36%
-                        </StatHelpText>
-                    </Stat>
-                    <Stat
-                        minW='33%'
-                    >
-                        <Flex flexWrap='nowrap' flexDirection='column'>
-                            <StatLabel>Median Rent Price</StatLabel>
-                            <StatNumber>$1,500/mo</StatNumber>
-                            <StatHelpText>
-                                <StatArrow type='increase'/>
-                                23.36%
-                            </StatHelpText>
-                        </Flex>
-                    </Stat>
-                    <Stat
-                        minW='33%'>
-                        <StatLabel>Unemployment Rate</StatLabel>
-                        <StatNumber>12%</StatNumber>
-                        <StatHelpText>
-                            <StatArrow type='increase'/>
-                            23.36%
-                        </StatHelpText>
-                    </Stat>
-                    <Stat
-                        minW='33%'>
-                        <StatLabel>Days of Sun</StatLabel>
-                        {/*<Icon as={FiSun} ml={2}/>*/}
-                        <StatNumber>220</StatNumber>
-                    </Stat>
-                    <Stat
-                        minW='33%'>
-                        <StatLabel>Median Temperature</StatLabel>
-                        {/*<Icon as={FiSun} ml={2}/>*/}
-                        <StatNumber>50°</StatNumber>
-                    </Stat>
+                    <CityStat name={"Population"} value={city.population.all} change={city.population.all_change}/>
+                    <CityStat name={"Median Home Price"} value={city.population.median_home_price}
+                              change={city.population.median_home_price_change} pre='$'/>
+                    <CityStat name={"Median Rent Price"} value={city.population.median_rent_price}
+                              change={city.population.median_rent_price_change} pre='$'/>
+                    <CityStat name={"Unemployment Rate"} value={city.population.unemployment_rate * 100}
+                              change={city.population.unemployment_rate_change} post='%'/>
+                    <CityStat name={"Days of Sun"} value={city.weather.days_of_sun}/>
+                    <CityStat name={"Average Temperature"} value={city.weather.temp_mean} post={"°"}/>
                 </Flex>
                 <Box
                     flexWrap='nowrap'>
@@ -975,54 +477,34 @@ export default function CityCard({city}: { city: City }) {
                     justifyContent='space-between'
                     alignItems='center'
                     mb={4}>
-                    <Stat
-                        minW='33%'>
-                        <StatLabel>Median Age</StatLabel>
-                        <StatNumber>{new Intl.NumberFormat('en-us').format(42)}</StatNumber>
-                        <StatHelpText>
-                            <StatArrow type='increase'/>
-                            23.36%
-                        </StatHelpText>
-                    </Stat>
-                    <Stat
-                        minW='33%'>
-                        <StatLabel>Median Income</StatLabel>
-                        <StatNumber>${new Intl.NumberFormat('en-us').format(78000)}</StatNumber>
-                        <StatHelpText>
-                            <StatArrow type='increase'/>
-                            23.36%
-                        </StatHelpText>
-                    </Stat>
-                    <Stat
-                        minW='33%'>
-                        <StatLabel>Poverty Rate</StatLabel>
-                        <StatNumber>18%</StatNumber>
-                        <StatHelpText>
-                            <StatArrow type='increase'/>
-                            23.36%
-                        </StatHelpText>
-                    </Stat>
+                    <CityStat name="Median Age" value={city.population.median_age}
+                              change={city.population.median_age_change}/>
+                    <CityStat name="Median Income" value={city.population.median_income}
+                              change={city.population.median_income_change} pre='$'/>
+                    <CityStat name="Poverty Rate" value={city.population.poverty_rate * 100}
+                              change={city.population.poverty_rate_change} post='%'/>
                 </Flex>
                 <Flex w='100%'
                       wrap='wrap'>
                     <VStack minW='50%' h={400}>
-                        <Heading as='h4' size='md' textAlign='center'>
-                            Population Age Distribution
+                        <Heading as='h4' size='md'>
+                            How Old is Everyone?
                         </Heading>
-                        <DivergingStacked/>
+                        <AgeDistributionBar/>
                     </VStack>
-                    <VStack minW='50%' h={400}>
-                        <Heading as='h4' size='md' textAlign='center'>
-                            Type of Commute
+                    <VStack minW='50%' h={400} px={4}>
+                        <Heading as='h4' size='md'>
+                            How Do People Commute?
                         </Heading>
                         <CommutePie/>
                     </VStack>
                 </Flex>
                 <Flex w='100%'
                       wrap='wrap'
+                      mt={5}
                       h={400}>
-                    <Heading as='h4' size='md' textAlign='center'>
-                        Occupations
+                    <Heading as='h4' size='md'>
+                        What Does Everyone Do?
                     </Heading>
                     <OccupationHeatmap/>
                 </Flex>
@@ -1038,26 +520,10 @@ export default function CityCard({city}: { city: City }) {
                     justifyContent='space-between'
                     alignItems='center'
                     mb={4}>
-                    <Stat
-                        minW='25%'>
-                        <StatLabel>Rain<YearCite/></StatLabel>
-                        <StatNumber>18in</StatNumber>
-                    </Stat>
-                    <Stat
-                        minW='25%'>
-                        <StatLabel>High<YearCite/></StatLabel>
-                        <StatNumber>20°</StatNumber>
-                    </Stat>
-                    <Stat
-                        minW='25%'>
-                        <StatLabel>Low<YearCite/></StatLabel>
-                        <StatNumber>80°</StatNumber>
-                    </Stat>
-                    <Stat
-                        minW='25%'>
-                        <StatLabel>Snow <YearCite/></StatLabel>
-                        <StatNumber>10in</StatNumber>
-                    </Stat>
+                    <CityStat name="High" w='25%' value={city.weather.temp_high} post='°'/>
+                    <CityStat name="Low" w='25%' value={city.weather.temp_low} post='°'/>
+                    <CityStat name="Rain" w='25%' value={city.weather.rain_inches} post='"'/>
+                    <CityStat name="Snow" w='25%' value={city.weather.snow_inches} post='"'/>
                 </Flex>
 
                 <Box

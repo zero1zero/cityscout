@@ -9,21 +9,52 @@
  */
 
 export interface Population {
-    total: number;
+    all: number;
+    all_change: number;
+    median_age: number;
+    median_age_change: number;
+    poverty_rate: number;
+    poverty_rate_change: number;
+    unemployment_rate: number;
+    unemployment_rate_change: number;
+    median_income: number;
+    median_income_change: number;
+    median_home_price: number;
+    median_home_price_change: number;
+    median_rent_price: number;
+    median_rent_price_change: number;
+    occupation_all: number;
+    occupations: Occupation[];
+    commute_all: number;
+    commute: Commute[];
+    ages: Ages;
+}
+
+export interface Occupation {
+    name: string;
+    count: number;
+}
+
+export interface Commute {
+    name: string;
+    count: number;
+}
+
+export interface Ages {
     male: number;
     male_under_18: number;
     male_18_to_24: number;
-    male_25_to_30: number;
-    male_30_to_40: number;
-    male_40_to_50: number;
-    male_50_to_60: number;
-    male_over_60: number;
+    male_25_to_29: number;
+    male_30_to_39: number;
+    male_40_to_49: number;
+    male_50_to_59: number;
+    male_60_and_over: number;
     female: number;
     female_under_18: number;
     female_18_to_24: number;
-    female_25_to_30: number;
-    female_30_to_40: number;
-    female_40_to_50: number;
-    female_50_to_60: number;
-    female_over_60: number;
+    female_25_to_29: number;
+    female_30_to_39: number;
+    female_40_to_49: number;
+    female_50_to_59: number;
+    female_60_and_over: number;
 }

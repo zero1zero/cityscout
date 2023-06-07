@@ -2,7 +2,7 @@ package app.cityscout
 
 import app.cityscout.core.Scraper
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class ScraperTest {

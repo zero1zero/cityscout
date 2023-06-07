@@ -11,7 +11,7 @@ import kotlinx.serialization.json.jsonPrimitive
 
 class Scraper {
 
-    suspend fun getRedfinURL(city : String) : String {
+    suspend fun getRedfinURL(city: String): String {
         val client = HttpClient(CIO)
 
         val response = client.get("https://www.redfin.com/stingray/do/location-autocomplete") {
@@ -43,8 +43,9 @@ class Scraper {
 
         //todo check if success
 
-        val url: String = json.jsonObject.get("payload")?.jsonObject?.get("exactMatch")?.jsonObject?.get("url")?.jsonPrimitive?.content
-            ?: throw IllegalStateException("Can't parse Redfin for $city")
+        val url: String =
+            json.jsonObject.get("payload")?.jsonObject?.get("exactMatch")?.jsonObject?.get("url")?.jsonPrimitive?.content
+                ?: throw IllegalStateException("Can't parse Redfin for $city")
 
         return "https://www.redfin.com${url}"
     }

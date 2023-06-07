@@ -3,6 +3,7 @@ package app.cityscout.routes
 import app.cityscout.core.CensusData
 import app.cityscout.core.Images
 import app.cityscout.core.OpenAI
+import app.cityscout.core.Scraper
 import app.cityscout.model.Cities
 import app.cityscout.model.City
 import app.cityscout.model.Criterion
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory
 val openAI = OpenAI()
 val censusData = CensusData()
 val images = Images()
+val housing = Scraper()
 
 fun Application.configureExplore() {
     routing {
@@ -28,11 +30,16 @@ fun Application.configureExplore() {
             val cities = cityAndReasons.stream()
                 .map {
                     val name = censusData.getCityName(it.city)
+                    val census = censusData.getCensus(name)
+
                     City(
-                        name,
-                        it.reason,
+                        name, it.reason,
                         images.getCityImage(name),
-                        population = censusData.getPopulation(name)
+                        "",//housing.getRedfinURL("${name.city}, ${name.state}"),
+                        census.lat,
+                        census.long,
+                        census.population,
+                        census.weather
                     )
                 }
                 .toList()

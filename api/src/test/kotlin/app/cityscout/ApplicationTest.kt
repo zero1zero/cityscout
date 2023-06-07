@@ -4,7 +4,7 @@ import app.cityscout.model.Criterion
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.serialization.gson.*
 import io.ktor.server.testing.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -16,7 +16,7 @@ class ApplicationTest {
         testApplication {
             val client = createClient {
                 install(ContentNegotiation) {
-                    json()
+                    gson()
                 }
             }
 
@@ -24,13 +24,15 @@ class ApplicationTest {
                 module()
             }
 
-            val criterion = Criterion(listOf(
-                "cafes",
-                "bars",
-                "nature",
-                "liberal",
-                "job opportunities",
-                "baseball team")
+            val criterion = Criterion(
+                listOf(
+                    "cafes",
+                    "bars",
+                    "nature",
+                    "liberal",
+                    "job opportunities",
+                    "baseball team"
+                )
             )
 
             client.post("/explore") {

@@ -1,4 +1,3 @@
-
 import pathlib
 import random
 
@@ -9,7 +8,6 @@ from scrapy.spiders.shutterstock import ShutterSpider
 
 
 class RandomUserAgent:
-
     _user_agents: []
 
     with open(f"{pathlib.Path(__file__).parent.resolve()}/scrape/user-agents.txt", "r") as f:

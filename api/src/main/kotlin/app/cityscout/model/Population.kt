@@ -9,27 +9,60 @@
  */
 package app.cityscout.model
 
-import javax.annotation.processing.Generated
-import kotlinx.serialization.Serializable
+import java.math.BigDecimal
 
-@Serializable
+import javax.annotation.processing.Generated
+
 @Generated
 data class Population(
-    val total: Long,
-    val male: Long,
-    val male_under_18: Long,
-    val male_18_to_24: Long,
-    val male_25_to_30: Long,
-    val male_30_to_40: Long,
-    val male_40_to_50: Long,
-    val male_50_to_60: Long,
-    val male_over_60: Long,
-    val female: Long,
-    val female_under_18: Long,
-    val female_18_to_24: Long,
-    val female_25_to_30: Long,
-    val female_30_to_40: Long,
-    val female_40_to_50: Long,
-    val female_50_to_60: Long,
-    val female_over_60: Long
-)
+    val all: Long,
+    val all_change: BigDecimal,
+    val median_age: Long,
+    val median_age_change: BigDecimal,
+    val poverty_rate: BigDecimal,
+    val poverty_rate_change: BigDecimal,
+    val unemployment_rate: BigDecimal,
+    val unemployment_rate_change: BigDecimal,
+    val median_income: Long,
+    val median_income_change: BigDecimal,
+    val median_home_price: Long,
+    val median_home_price_change: BigDecimal,
+    val median_rent_price: Long,
+    val median_rent_price_change: BigDecimal,
+    val occupation_all: Long,
+    val occupations: List<Occupation>,
+    val commute_all: Long,
+    val commute: List<Commute>,
+    val ages: Ages
+) {
+
+    data class Occupation(
+        val name: String,
+        val count: Long
+    )
+
+    data class Commute(
+        val name: String,
+        val count: Long
+    )
+
+    data class Ages(
+        val male: Long,
+        val male_under_18: Long,
+        val male_18_to_24: Long,
+        val male_25_to_29: Long,
+        val male_30_to_39: Long,
+        val male_40_to_49: Long,
+        val male_50_to_59: Long,
+        val male_60_and_over: Long,
+        val female: Long,
+        val female_under_18: Long,
+        val female_18_to_24: Long,
+        val female_25_to_29: Long,
+        val female_30_to_39: Long,
+        val female_40_to_49: Long,
+        val female_50_to_59: Long,
+        val female_60_and_over: Long
+    )
+
+}

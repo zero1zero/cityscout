@@ -98,6 +98,15 @@ export default function Criteria({criterion, loading, moreToGo, onAdd, onChange,
         )
     }
 
+    function shuffle(array: string[]) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+
+        return array
+    }
+
     const tips = (onSubmit: (criteria: string) => void) => {
         const items = [
             "Easy access to hiking",
@@ -107,7 +116,8 @@ export default function Criteria({criterion, loading, moreToGo, onAdd, onChange,
             "Similar weather to San Diego",
             "1 hour from a major city",
             "Lower taxes than Portland",
-            "Job opportunities in tech"
+            "Job opportunities in tech",
+            "Small town feel"
         ];
         return (
             <List
@@ -124,20 +134,22 @@ export default function Criteria({criterion, loading, moreToGo, onAdd, onChange,
                     <Flex
                         ml={5}
                         flexWrap="wrap">
-                        {items.map((item, index) => (
-                            <Box
-                                mb={1}
-                                width="33%"
-                                key={index}>
-                                <Text as={'cite'}>
-                                    <IconButton
-                                        aria-label='Add critieria'
-                                        size='sm'
-                                        onClick={() => onSubmit(item)}
-                                        icon={<FiPlus/>}/> {item}
-                                </Text>
-                            </Box>
-                        ))}
+                        {items
+                            .slice(0, 8)
+                            .map((item, index) => (
+                                <Box
+                                    mb={1}
+                                    width="33%"
+                                    key={index}>
+                                    <Text as={'cite'}>
+                                        <IconButton
+                                            aria-label='Add critieria'
+                                            size='sm'
+                                            onClick={() => onSubmit(item)}
+                                            icon={<FiPlus/>}/> {item}
+                                    </Text>
+                                </Box>
+                            ))}
                         <Box
                             mb={1}
                             width="33%"

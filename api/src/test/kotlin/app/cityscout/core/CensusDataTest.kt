@@ -1,9 +1,7 @@
 package app.cityscout.core
 
 import app.cityscout.model.CityName
-import org.junit.Assert.assertTrue
-import org.junit.Test
-import java.io.File
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class CensusDataTest {
@@ -31,12 +29,7 @@ class CensusDataTest {
     @Test
     fun getPop() {
         val portland = CityName("Portland city, Oregon", "Oregon", "OR", "portland-or")
-        val population = censusData.getPopulation(portland)
-        assertEquals(647176, population.total)
-    }
-
-    @Test
-    fun getAllPop() {
-        censusData.getAllPopulation()
+        val city = censusData.getCensus(portland)
+        assertEquals(647176, city.population.all)
     }
 }

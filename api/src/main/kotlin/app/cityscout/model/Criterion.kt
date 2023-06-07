@@ -10,9 +10,7 @@
 package app.cityscout.model
 
 import javax.annotation.processing.Generated
-import kotlinx.serialization.Serializable
 
-@Serializable
 @Generated
 data class Criterion(
     val criterion: List<String>

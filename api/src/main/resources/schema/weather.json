@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "days_of_sun": {
+      "type": "integer"
+    },
+    "temp_high": {
+      "type": "number"
+    },
+    "temp_low": {
+      "type": "number"
+    },
+    "temp_mean": {
+      "type": "number"
+    },
+    "snow_inches": {
+      "type": "number"
+    },
+    "rain_inches": {
+      "type": "number"
+    },
+    "monthly_means": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "temperature_2m_mean": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "temperature_2m_max": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "temperature_2m_min": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "month",
+        "temperature_2m_max",
+        "temperature_2m_mean",
+        "temperature_2m_min"
+      ]
+    }
+  },
+  "required": [
+    "days_of_sun",
+    "temp_high",
+    "temp_low",
+    "temp_mean",
+    "snow_inches",
+    "rain_inches",
+    "monthly_means"
+  ]
+}

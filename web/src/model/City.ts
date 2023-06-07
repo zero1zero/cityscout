@@ -10,11 +10,15 @@
 
 import {CityName} from "./CityName";
 import {Population} from "./Population";
+import {Weather} from "./Weather";
 
 export interface City {
     name: CityName;
     reason: string;
     img: string;
-    redfin?: string;
-    population?: Population;
+    redfin: string;
+    lat: number;
+    lon: number;
+    population: Population;
+    weather: Weather;
 }

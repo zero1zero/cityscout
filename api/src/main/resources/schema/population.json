@@ -3,75 +3,181 @@
   "title": "Generated schema for Root",
   "type": "object",
   "properties": {
-    "total": {
+    "all": {
       "type": "integer"
     },
-    "male": {
+    "all_change": {
+      "type": "number"
+    },
+    "median_age": {
       "type": "integer"
     },
-    "male_under_18": {
+    "median_age_change": {
+      "type": "number"
+    },
+    "poverty_rate": {
+      "type": "number"
+    },
+    "poverty_rate_change": {
+      "type": "number"
+    },
+    "unemployment_rate": {
+      "type": "number"
+    },
+    "unemployment_rate_change": {
+      "type": "number"
+    },
+    "median_income": {
       "type": "integer"
     },
-    "male_18_to_24": {
+    "median_income_change": {
+      "type": "number"
+    },
+    "median_home_price": {
       "type": "integer"
     },
-    "male_25_to_30": {
+    "median_home_price_change": {
+      "type": "number"
+    },
+    "median_rent_price": {
       "type": "integer"
     },
-    "male_30_to_40": {
+    "median_rent_price_change": {
+      "type": "number"
+    },
+    "occupation_all": {
       "type": "integer"
     },
-    "male_40_to_50": {
+    "occupations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "count"
+        ]
+      }
+    },
+    "commute_all": {
       "type": "integer"
     },
-    "male_50_to_60": {
-      "type": "integer"
+    "commute": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "count"
+        ]
+      }
     },
-    "male_over_60": {
-      "type": "integer"
-    },
-    "female": {
-      "type": "integer"
-    },
-    "female_under_18": {
-      "type": "integer"
-    },
-    "female_18_to_24": {
-      "type": "integer"
-    },
-    "female_25_to_30": {
-      "type": "integer"
-    },
-    "female_30_to_40": {
-      "type": "integer"
-    },
-    "female_40_to_50": {
-      "type": "integer"
-    },
-    "female_50_to_60": {
-      "type": "integer"
-    },
-    "female_over_60": {
-      "type": "integer"
+    "ages": {
+      "type": "object",
+      "properties": {
+        "male": {
+          "type": "integer"
+        },
+        "male_under_18": {
+          "type": "integer"
+        },
+        "male_18_to_24": {
+          "type": "integer"
+        },
+        "male_25_to_29": {
+          "type": "integer"
+        },
+        "male_30_to_39": {
+          "type": "integer"
+        },
+        "male_40_to_49": {
+          "type": "integer"
+        },
+        "male_50_to_59": {
+          "type": "integer"
+        },
+        "male_60_and_over": {
+          "type": "integer"
+        },
+        "female": {
+          "type": "integer"
+        },
+        "female_under_18": {
+          "type": "integer"
+        },
+        "female_18_to_24": {
+          "type": "integer"
+        },
+        "female_25_to_29": {
+          "type": "integer"
+        },
+        "female_30_to_39": {
+          "type": "integer"
+        },
+        "female_40_to_49": {
+          "type": "integer"
+        },
+        "female_50_to_59": {
+          "type": "integer"
+        },
+        "female_60_and_over": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "male",
+        "male_under_18",
+        "male_18_to_24",
+        "male_25_to_29",
+        "male_30_to_39",
+        "male_40_to_49",
+        "male_50_to_59",
+        "male_60_and_over",
+        "female",
+        "female_under_18",
+        "female_18_to_24",
+        "female_25_to_29",
+        "female_30_to_39",
+        "female_40_to_49",
+        "female_50_to_59",
+        "female_60_and_over"
+      ]
     }
   },
   "required": [
-    "total",
-    "male",
-    "male_under_18",
-    "male_18_to_24",
-    "male_25_to_30",
-    "male_30_to_40",
-    "male_40_to_50",
-    "male_50_to_60",
-    "male_over_60",
-    "female",
-    "female_under_18",
-    "female_18_to_24",
-    "female_25_to_30",
-    "female_30_to_40",
-    "female_40_to_50",
-    "female_50_to_60",
-    "female_over_60"
+    "all",
+    "all_change",
+    "median_age",
+    "median_age_change",
+    "poverty_rate",
+    "poverty_rate_change",
+    "unemployment_rate",
+    "unemployment_rate_change",
+    "median_income",
+    "median_income_change",
+    "median_home_price",
+    "median_home_price_change",
+    "median_rent_price",
+    "median_rent_price_change",
+    "occupation_all",
+    "occupations",
+    "commute_all",
+    "commute",
+    "ages"
   ]
 }

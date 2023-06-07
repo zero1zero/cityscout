@@ -2,113 +2,24 @@ package app.cityscout.core
 
 import app.cityscout.model.CityName
 import app.cityscout.model.Population
+import app.cityscout.model.Weather
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.ktorm.database.Database
+import org.ktorm.database.asIterable
 import org.ktorm.dsl.*
 import org.ktorm.schema.Column
 import org.ktorm.schema.Table
 import org.ktorm.schema.int
 import org.ktorm.schema.varchar
+import org.ktorm.support.sqlite.SQLiteDialect
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.util.NoSuchElementException
+import java.math.BigDecimal
+import java.sql.ResultSet
 
-/**
- * CREATE TABLE [Cities] (
- * 	[NAME] text,
- * 	[state] integer,
- * 	[place] integer,
- * 	[city] text,
- * 	[state_name] text,
- * 	[abbr] text,
- * 	[population-total] integer,
- * 	[population-total-male] integer,
- * 	[population-total-male-under-5-years] integer,
- * 	[population-total-male-5-to-9-years] integer,
- * 	[population-total-male-10-to-14-years] integer,
- * 	[population-total-male-15-to-17-years] integer,
- * 	[population-total-male-18-and-19-years] integer,
- * 	[population-total-male-20-years] integer,
- * 	[population-total-male-21-years] integer,
- * 	[population-total-male-22-to-24-years] integer,
- * 	[population-total-male-25-to-29-years] integer,
- * 	[population-total-male-30-to-34-years] integer,
- * 	[population-total-male-35-to-39-years] integer,
- * 	[population-total-male-40-to-44-years] integer,
- * 	[population-total-male-45-to-49-years] integer,
- * 	[population-total-male-50-to-54-years] integer,
- * 	[population-total-male-55-to-59-years] integer,
- * 	[population-total-male-60-and-61-years] integer,
- * 	[population-total-male-62-to-64-years] integer,
- * 	[population-total-male-65-and-66-years] integer,
- * 	[population-total-male-67-to-69-years] integer,
- * 	[population-total-male-70-to-74-years] integer,
- * 	[population-total-male-75-to-79-years] integer,
- * 	[population-total-male-80-to-84-years] integer,
- * 	[population-total-male-85-years-and-over] integer,
- * 	[population-total-female] integer,
- * 	[population-total-female-under-5-years] integer,
- * 	[population-total-female-5-to-9-years] integer,
- * 	[population-total-female-10-to-14-years] integer,
- * 	[population-total-female-15-to-17-years] integer,
- * 	[population-total-female-18-and-19-years] integer,
- * 	[population-total-female-20-years] integer,
- * 	[population-total-female-21-years] integer,
- * 	[population-total-female-22-to-24-years] integer,
- * 	[population-total-female-25-to-29-years] integer,
- * 	[population-total-female-30-to-34-years] integer,
- * 	[population-total-female-35-to-39-years] integer,
- * 	[population-total-female-40-to-44-years] integer,
- * 	[population-total-female-45-to-49-years] integer,
- * 	[population-total-female-50-to-54-years] integer,
- * 	[population-total-female-55-to-59-years] integer,
- * 	[population-total-female-60-and-61-years] integer,
- * 	[population-total-female-62-to-64-years] integer,
- * 	[population-total-female-65-and-66-years] integer,
- * 	[population-total-female-67-to-69-years] integer,
- * 	[population-total-female-70-to-74-years] integer,
- * 	[population-total-female-75-to-79-years] integer,
- * 	[population-total-female-80-to-84-years] integer,
- * 	[population-total-female-85-years-and-over] integer,
- * 	[population-geography] text,
- * 	[median-rent-by-bedrooms-median-gross-rent-total] integer,
- * 	[median-rent-by-bedrooms-median-gross-rent-total-no-bedroom] integer,
- * 	[median-rent-by-bedrooms-median-gross-rent-total-1-bedroom] integer,
- * 	[median-rent-by-bedrooms-median-gross-rent-total-2-bedrooms] integer,
- * 	[median-rent-by-bedrooms-median-gross-rent-total-3-bedrooms] integer,
- * 	[median-rent-by-bedrooms-median-gross-rent-total-4-bedrooms] integer,
- * 	[median-rent-by-bedrooms-median-gross-rent-total-5-or-more-bedrooms] integer,
- * 	[median-rent-by-bedrooms-geography] text,
- * 	[price-asked-home-value-total] integer,
- * 	[price-asked-home-value-total-less-than-$10,000] integer,
- * 	[price-asked-home-value-total-$10,000-to-$14,999] integer,
- * 	[price-asked-home-value-total-$15,000-to-$19,999] integer,
- * 	[price-asked-home-value-total-$20,000-to-$24,999] integer,
- * 	[price-asked-home-value-total-$25,000-to-$29,999] integer,
- * 	[price-asked-home-value-total-$30,000-to-$34,999] integer,
- * 	[price-asked-home-value-total-$35,000-to-$39,999] integer,
- * 	[price-asked-home-value-total-$40,000-to-$49,999] integer,
- * 	[price-asked-home-value-total-$50,000-to-$59,999] integer,
- * 	[price-asked-home-value-total-$60,000-to-$69,999] integer,
- * 	[price-asked-home-value-total-$70,000-to-$79,999] integer,
- * 	[price-asked-home-value-total-$80,000-to-$89,999] integer,
- * 	[price-asked-home-value-total-$90,000-to-$99,999] integer,
- * 	[price-asked-home-value-total-$100,000-to-$124,999] integer,
- * 	[price-asked-home-value-total-$125,000-to-$149,999] integer,
- * 	[price-asked-home-value-total-$150,000-to-$174,999] integer,
- * 	[price-asked-home-value-total-$175,000-to-$199,999] integer,
- * 	[price-asked-home-value-total-$200,000-to-$249,999] integer,
- * 	[price-asked-home-value-total-$250,000-to-$299,999] integer,
- * 	[price-asked-home-value-total-$300,000-to-$399,999] integer,
- * 	[price-asked-home-value-total-$400,000-to-$499,999] integer,
- * 	[price-asked-home-value-total-$500,000-to-$749,999] integer,
- * 	[price-asked-home-value-total-$750,000-to-$999,999] integer,
- * 	[price-asked-home-value-total-$1,000,000-to-$1,499,999] integer,
- * 	[price-asked-home-value-total-$1,500,000-to-$1,999,999] integer,
- * 	[price-asked-home-value-total-$2,000,000-or-more] integer,
- * 	[price-asked-home-value-geography] text
- * )
- */
-object Cities : Table<Nothing>("all") {
+object CityBase : Table<Nothing>("all") {
     val long_name = varchar("NAME").primaryKey()
     val state_id = int("state")
     val place_id = int("place")
@@ -116,56 +27,8 @@ object Cities : Table<Nothing>("all") {
     val state = varchar("state_name")
     val slug = varchar("slug")
     val abbr = varchar("abbr")
-
-    val populationTotal = int("population-total")
-    val populationTotalMale = int("population-total-male")
-    val populationTotalMaleUnder5Years = int("population-total-male-under-5-years")
-    val populationTotalMale5To9Years = int("population-total-male-5-to-9-years")
-    val populationTotalMale10To14Years = int("population-total-male-10-to-14-years")
-    val populationTotalMale15To17Years = int("population-total-male-15-to-17-years")
-    val populationTotalMale18And19Years = int("population-total-male-18-and-19-years")
-    val populationTotalMale20Years = int("population-total-male-20-years")
-    val populationTotalMale21Years = int("population-total-male-21-years")
-    val populationTotalMale22To24Years = int("population-total-male-22-to-24-years")
-    val populationTotalMale25To29Years = int("population-total-male-25-to-29-years")
-    val populationTotalMale30To34Years = int("population-total-male-30-to-34-years")
-    val populationTotalMale35To39Years = int("population-total-male-35-to-39-years")
-    val populationTotalMale40To44Years = int("population-total-male-40-to-44-years")
-    val populationTotalMale45To49Years = int("population-total-male-45-to-49-years")
-    val populationTotalMale50To54Years = int("population-total-male-50-to-54-years")
-    val populationTotalMale55To59Years = int("population-total-male-55-to-59-years")
-    val populationTotalMale60And61Years = int("population-total-male-60-and-61-years")
-    val populationTotalMale62To64Years = int("population-total-male-62-to-64-years")
-    val populationTotalMale65And66Years = int("population-total-male-65-and-66-years")
-    val populationTotalMale67To69Years = int("population-total-male-67-to-69-years")
-    val populationTotalMale70To74Years = int("population-total-male-70-to-74-years")
-    val populationTotalMale75To79Years = int("population-total-male-75-to-79-years")
-    val populationTotalMale80To84Years = int("population-total-male-80-to-84-years")
-    val populationTotalMale85YearsAndOver = int("population-total-male-85-years-and-over")
-    val populationTotalFemale = int("population-total-female")
-    val populationTotalFemaleUnder5Years = int("population-total-female-under-5-years")
-    val populationTotalFemale5To9Years = int("population-total-female-5-to-9-years")
-    val populationTotalFemale10To14Years = int("population-total-female-10-to-14-years")
-    val populationTotalFemale15To17Years = int("population-total-female-15-to-17-years")
-    val populationTotalFemale18And19Years = int("population-total-female-18-and-19-years")
-    val populationTotalFemale20Years = int("population-total-female-20-years")
-    val populationTotalFemale21Years = int("population-total-female-21-years")
-    val populationTotalFemale22To24Years = int("population-total-female-22-to-24-years")
-    val populationTotalFemale25To29Years = int("population-total-female-25-to-29-years")
-    val populationTotalFemale30To34Years = int("population-total-female-30-to-34-years")
-    val populationTotalFemale35To39Years = int("population-total-female-35-to-39-years")
-    val populationTotalFemale40To44Years = int("population-total-female-40-to-44-years")
-    val populationTotalFemale45To49Years = int("population-total-female-45-to-49-years")
-    val populationTotalFemale50To54Years= int("population-total-female-50-to-54-years")
-    val populationTotalFemale55To59Years = int("population-total-female-55-to-59-years")
-    val populationTotalFemale60And61Years = int("population-total-female-60-and-61-years")
-    val populationTotalFemale62To64Years = int("population-total-female-62-to-64-years")
-    val populationTotalFemale65And66Years = int("population-total-female-65-and-66-years")
-    val populationTotalFemale67To69Years = int("population-total-female-67-to-69-years")
-    val populationTotalFemale70To74Years = int("population-total-female-70-to-74-years")
-    val populationTotalFemale75To79Years = int("population-total-female-75-to-79-years")
-    val populationTotalFemale80To84Years = int("population-total-female-80-to-84-years")
-    val populationTotalFemale85YearsAndOver = int("population-total-female-85-years-and-over")
+    val lat = int("lat")
+    val lon = int("lon")
 }
 
 class CensusData {
@@ -175,107 +38,281 @@ class CensusData {
     private val database: Database = Database.connect(
         url = "jdbc:sqlite://${File(".").absolutePath}./data/census/data/all.sqlite",
         driver = "org.sqlite.JDBC",
+        dialect = SQLiteDialect()
     )
 
     fun getCityName(longName: String): CityName {
         val split = longName.split(", ")
-        val city = split[0]
-        val state = split[1]
+        val city = split[0].trim()
+        val state = split[1].trim()
         //long version of state
-        val stateCol = if(state.length > 2) Cities.state else Cities.abbr
+        val stateCol = if (state.length > 2) CityBase.state else CityBase.abbr
 
-        try {
-            return tryQueryCityName(stateCol, state, city)
+        return try {
+            tryQueryCityName(stateCol, state, city)
         } catch (e: NoSuchElementException) {
             logger.warn("Bad city name: $longName")
-            return tryQueryCityName(stateCol, state, "$city City")
+            tryQueryCityName(stateCol, state, "$city City")
         }
     }
 
-    fun tryQueryCityName(stateCol : Column<String>, state: String, city: String): CityName {
-        return database.from(Cities)
-            .select(Cities.city, Cities.state, Cities.abbr, Cities.slug)
-            .where((stateCol eq state) and (Cities.city eq city))
-            .map { CityName(it[Cities.city]!!, it[Cities.state]!!, it[Cities.abbr]!!, it[Cities.slug]!!) }
+    private fun tryQueryCityName(stateCol: Column<String>, state: String, city: String): CityName {
+        return database.from(CityBase)
+            .select(CityBase.city, CityBase.state, CityBase.abbr, CityBase.slug)
+            .where((stateCol eq state) and (CityBase.city eq city))
+            .map { CityName(it[CityBase.city]!!, it[CityBase.state]!!, it[CityBase.abbr]!!, it[CityBase.slug]!!) }
             .first()
     }
 
-    private val mapPopulation = fun(row : QueryRowSet): Population {
+    fun change(oldValue: Number, newValue: Number): BigDecimal {
+        if (oldValue == 0) {
+            return BigDecimal(-1)
+        }
+        val change = newValue.toDouble() - oldValue.toDouble()
+        return BigDecimal((change / oldValue.toDouble()) * 100.0)
+    }
+
+    val mapPopulation = fun(row: ResultSet): Population {
         return Population(
-            row[Cities.populationTotal]!!.toLong(),
-            row[Cities.populationTotalMale]!!.toLong(),
-            row[Cities.populationTotalMaleUnder5Years]!!.toLong() +
-                    row[Cities.populationTotalMale5To9Years]!!.toLong() +
-                    row[Cities.populationTotalMale10To14Years]!!.toLong() +
-                    row[Cities.populationTotalMale15To17Years]!!.toLong(),
+            all = row.getLong("2021-population-total"),
+            all_change = change(
+                row.getInt("2019-population-total"),
+                row.getInt("2021-population-total")
+            ),
 
-            row[Cities.populationTotalMale18And19Years]!!.toLong() +
-                    row[Cities.populationTotalMale20Years]!!.toLong() +
-                    row[Cities.populationTotalMale21Years]!!.toLong() +
-                    row[Cities.populationTotalMale22To24Years]!!.toLong(),
+            median_age = row.getLong("2019-median-age-median-age-total"),
+            median_age_change = change(
+                row.getInt("2019-median-age-median-age-total"),
+                row.getInt("2021-median-age-median-age-total")
+            ),
 
-            row[Cities.populationTotalMale25To29Years]!!.toLong(),
+            poverty_rate = BigDecimal(
+                row.getDouble("2021-poverty-level-total-income-in-the-past-12-months-below-poverty-level")
+                        / row.getDouble("2021-poverty-level-total")
+            ),
+            poverty_rate_change = change(
+                row.getInt("2019-poverty-level-total-income-in-the-past-12-months-below-poverty-level"),
+                row.getInt("2021-poverty-level-total-income-in-the-past-12-months-below-poverty-level")
+            ),
 
-            row[Cities.populationTotalMale30To34Years]!!.toLong() +
-                    row[Cities.populationTotalMale35To39Years]!!.toLong(),
+            unemployment_rate = BigDecimal(
+                row.getDouble("2021-unemployed-total-in-labor-force-civilian-labor-force-unemployed")
+                        / row.getDouble("2021-unemployed-total-in-labor-force-civilian-labor-force")
+            ),
+            unemployment_rate_change = change(
+                row.getBigDecimal("2019-unemployed-total-in-labor-force-civilian-labor-force-unemployed"),
+                row.getBigDecimal("2021-unemployed-total-in-labor-force-civilian-labor-force-unemployed")
+            ),
 
-            row[Cities.populationTotalMale40To44Years]!!.toLong() +
-                    row[Cities.populationTotalMale45To49Years]!!.toLong(),
+            median_income = row.getLong("2021-income-total"),
+            median_income_change = change(
+                row.getLong("2019-income-total"),
+                row.getLong("2021-income-total")
+            ),
 
-            row[Cities.populationTotalMale50To54Years]!!.toLong() +
-                    row[Cities.populationTotalMale55To59Years]!!.toLong(),
+            median_home_price = row.getLong("2021-median-home-value-median-value-total"),
+            median_home_price_change = change(
+                row.getLong("2019-median-home-value-median-value-total"),
+                row.getLong("2021-median-home-value-median-value-total")
+            ),
 
-            row[Cities.populationTotalMale60And61Years]!!.toLong() +
-                    row[Cities.populationTotalMale62To64Years]!!.toLong() +
-                    row[Cities.populationTotalMale65And66Years]!!.toLong() +
-                    row[Cities.populationTotalMale67To69Years]!!.toLong() +
-                    row[Cities.populationTotalMale70To74Years]!!.toLong() +
-                    row[Cities.populationTotalMale75To79Years]!!.toLong() +
-                    row[Cities.populationTotalMale80To84Years]!!.toLong() +
-                    row[Cities.populationTotalMale85YearsAndOver]!!.toLong(),
+            median_rent_price = row.getLong("2021-median-rent-median-gross-rent"),
+            median_rent_price_change = change(
+                row.getLong("2019-median-rent-median-gross-rent"),
+                row.getLong("2021-median-rent-median-gross-rent")
+            ),
 
-            row[Cities.populationTotalFemale]!!.toLong(),
-            row[Cities.populationTotalFemaleUnder5Years]!!.toLong() +
-                    row[Cities.populationTotalFemale5To9Years]!!.toLong() +
-                    row[Cities.populationTotalFemale10To14Years]!!.toLong() +
-                    row[Cities.populationTotalFemale15To17Years]!!.toLong(),
+            occupations = listOf(
+                Population.Occupation(
+                    "Agriculture, forestry, fishing and hunting, and mining",
+                    row.getLong("2021-occupation-total-agriculture-forestry-fishing-and-hunting-and-mining")
+                ),
+                Population.Occupation(
+                    "Construction",
+                    row.getLong("2021-occupation-total-construction")
+                ),
+                Population.Occupation(
+                    "Manufacturing",
+                    row.getLong("2021-occupation-total-manufacturing")
+                ),
+                Population.Occupation(
+                    "Wholesale",
+                    row.getLong("2021-occupation-total-wholesale-trade")
+                ),
+                Population.Occupation(
+                    "Retail",
+                    row.getLong("2021-occupation-total-retail-trade")
+                ),
+                Population.Occupation(
+                    "Transportation and warehousing, and utilities",
+                    row.getLong("2021-occupation-total-transportation-and-warehousing-and-utilities")
+                ),
+                Population.Occupation(
+                    "Information",
+                    row.getLong("2021-occupation-total-information")
+                ),
+                Population.Occupation(
+                    "Finance and insurance, and real estate, and rental and leasing",
+                    row.getLong("2021-occupation-total-finance-and-insurance-and-real-estate-and-rental-and-leasing")
+                ),
+                Population.Occupation(
+                    "Professional, scientific, and management, and administrative, and waste management services",
+                    row.getLong("2021-occupation-total-professional-scientific-and-management-and-administrative-and-waste-management-services")
+                ),
+                Population.Occupation(
+                    "Educational services, and health care and social assistance",
+                    row.getLong("2021-occupation-total-educational-services-and-health-care-and-social-assistance")
+                ),
+                Population.Occupation(
+                    "Arts, entertainment, and recreation, and accommodation and food services",
+                    row.getLong("2021-occupation-total-arts-entertainment-and-recreation-and-accommodation-and-food-services")
+                ),
+                Population.Occupation(
+                    "Other services, except public administration",
+                    row.getLong("2021-occupation-total-other-services-except-public-administration")
+                ),
+                Population.Occupation(
+                    "Public administration",
+                    row.getLong("2021-occupation-total-public-administration")
+                ),
+                Population.Occupation(
+                    "Management, business, science, and arts occupations",
+                    row.getLong("2021-occupation-total-management-business-science-and-arts-occupations")
+                ),
+            ),
+            occupation_all = row.getLong("2021-occupation-total"),
+            commute = listOf(
+                Population.Commute(
+                    "Drove Alone",
+                    row.getLong("2021-commute-total-car-truck-or-van-drove-alone")
+                ),
+                Population.Commute(
+                    "Carpool",
+                    row.getLong("2021-commute-total-car-truck-or-van-carpooled")
+                ),
+                Population.Commute(
+                    "Public Transport",
+                    row.getLong("2021-commute-total-public-transportation-(excluding-taxicab)")
+                ),
+                Population.Commute(
+                    "Walked",
+                    row.getLong("2021-commute-total-walked")
+                ),
+                Population.Commute(
+                    "Biked",
+                    row.getLong("2021-commute-total-bicycle")
+                ),
+                Population.Commute(
+                    "WFH",
+                    row.getLong("2021-commute-total-worked-from-home")
+                ),
+                Population.Commute(
+                    "Other",
+                    row.getLong("2021-commute-total-taxicab-motorcycle-or-other-means")
+                ),
+            ),
+            commute_all = row.getLong("2021-commute-total"),
+            ages = Population.Ages(
+                male = row.getLong("2021-population-total-male"),
+                male_under_18 = row.getLong("2021-population-total-male-under-5-years") +
+                        row.getLong("2021-population-total-male-5-to-9-years") +
+                        row.getLong("2021-population-total-male-10-to-14-years") +
+                        row.getLong("2021-population-total-male-15-to-17-years"),
+                male_18_to_24 = row.getLong("2021-population-total-male-18-and-19-years") +
+                        row.getLong("2021-population-total-male-20-years") +
+                        row.getLong("2021-population-total-male-21-years") +
+                        row.getLong("2021-population-total-male-22-to-24-years"),
+                male_25_to_29 = row.getLong("2021-population-total-male-25-to-29-years"),
+                male_30_to_39 = row.getLong("2021-population-total-male-30-to-34-years") +
+                        row.getLong("2021-population-total-male-35-to-39-years"),
+                male_40_to_49 = row.getLong("2021-population-total-male-40-to-44-years") +
+                        row.getLong("2021-population-total-male-45-to-49-years"),
+                male_50_to_59 = row.getLong("2021-population-total-male-50-to-54-years") +
+                        row.getLong("2021-population-total-male-55-to-59-years"),
+                male_60_and_over = row.getLong("2021-population-total-male-60-and-61-years") +
+                        row.getLong("2021-population-total-male-62-to-64-years") +
+                        row.getLong("2021-population-total-male-65-and-66-years") +
+                        row.getLong("2021-population-total-male-67-to-69-years") +
+                        row.getLong("2021-population-total-male-70-to-74-years") +
+                        row.getLong("2021-population-total-male-75-to-79-years") +
+                        row.getLong("2021-population-total-male-80-to-84-years") +
+                        row.getLong("2021-population-total-male-85-years-and-over"),
 
-            row[Cities.populationTotalFemale18And19Years]!!.toLong() +
-                    row[Cities.populationTotalFemale20Years]!!.toLong() +
-                    row[Cities.populationTotalFemale21Years]!!.toLong() +
-                    row[Cities.populationTotalFemale22To24Years]!!.toLong(),
-
-            row[Cities.populationTotalFemale25To29Years]!!.toLong(),
-
-            row[Cities.populationTotalFemale30To34Years]!!.toLong() +
-                    row[Cities.populationTotalFemale35To39Years]!!.toLong(),
-
-            row[Cities.populationTotalFemale40To44Years]!!.toLong() +
-                    row[Cities.populationTotalFemale45To49Years]!!.toLong(),
-
-            row[Cities.populationTotalFemale50To54Years]!!.toLong() +
-                    row[Cities.populationTotalFemale55To59Years]!!.toLong(),
-
-            row[Cities.populationTotalFemale60And61Years]!!.toLong() +
-                    row[Cities.populationTotalFemale62To64Years]!!.toLong() +
-                    row[Cities.populationTotalFemale65And66Years]!!.toLong() +
-                    row[Cities.populationTotalFemale67To69Years]!!.toLong() +
-                    row[Cities.populationTotalFemale70To74Years]!!.toLong() +
-                    row[Cities.populationTotalFemale75To79Years]!!.toLong() +
-                    row[Cities.populationTotalFemale80To84Years]!!.toLong() +
-                    row[Cities.populationTotalFemale85YearsAndOver]!!.toLong(),
+                female = row.getLong("2021-population-total-female"),
+                female_under_18 = row.getLong("2021-population-total-female-under-5-years") +
+                        row.getLong("2021-population-total-female-5-to-9-years") +
+                        row.getLong("2021-population-total-female-10-to-14-years") +
+                        row.getLong("2021-population-total-female-15-to-17-years"),
+                female_18_to_24 = row.getLong("2021-population-total-female-18-and-19-years") +
+                        row.getLong("2021-population-total-female-20-years") +
+                        row.getLong("2021-population-total-female-21-years") +
+                        row.getLong("2021-population-total-female-22-to-24-years"),
+                female_25_to_29 = row.getLong("2021-population-total-female-25-to-29-years"),
+                female_30_to_39 = row.getLong("2021-population-total-female-30-to-34-years") +
+                        row.getLong("2021-population-total-female-35-to-39-years"),
+                female_40_to_49 = row.getLong("2021-population-total-female-40-to-44-years") +
+                        row.getLong("2021-population-total-female-45-to-49-years"),
+                female_50_to_59 = row.getLong("2021-population-total-female-50-to-54-years") +
+                        row.getLong("2021-population-total-female-55-to-59-years"),
+                female_60_and_over = row.getLong("2021-population-total-female-60-and-61-years") +
+                        row.getLong("2021-population-total-female-62-to-64-years") +
+                        row.getLong("2021-population-total-female-65-and-66-years") +
+                        row.getLong("2021-population-total-female-67-to-69-years") +
+                        row.getLong("2021-population-total-female-70-to-74-years") +
+                        row.getLong("2021-population-total-female-75-to-79-years") +
+                        row.getLong("2021-population-total-female-80-to-84-years") +
+                        row.getLong("2021-population-total-female-85-years-and-over"),
+            )
         )
     }
 
-    fun getPopulation(name: CityName): Population {
-        return database.from(Cities).select()
-            .where(Cities.slug eq name.slug)
-            .map(mapPopulation)
-            .first()
+    val mapWeather = fun(row: ResultSet): Weather {
+        val monthlyMeans = Json.parseToJsonElement(row.getString("monthly-means")).jsonObject
+        return Weather(
+
+            days_of_sun = row.getLong("days-of-sun"),
+            temp_high = row.getBigDecimal("high-temp"),
+            temp_low = row.getBigDecimal("low-temp"),
+            temp_mean = row.getBigDecimal("mean-temp"),
+            snow_inches = row.getBigDecimal("snow-inches"),
+            rain_inches = row.getBigDecimal("rain-inches"),
+            monthly_means = Weather.Monthly_means(
+                month = monthlyMeans["month"]!!.jsonObject.values.map { it.jsonPrimitive.content }.toList(),
+                temperature_2m_mean = monthlyMeans["temperature_2m_mean"]!!.jsonObject.values.map { it.jsonPrimitive.content }
+                    .toList(),
+                temperature_2m_max = monthlyMeans["temperature_2m_max"]!!.jsonObject.values.map { it.jsonPrimitive.content }
+                    .toList(),
+                temperature_2m_min = monthlyMeans["temperature_2m_min"]!!.jsonObject.values.map { it.jsonPrimitive.content }
+                    .toList(),
+            )
+        )
     }
 
-    fun getAllPopulation(): List<Population> {
-        return database.from(Cities).select()
-            .map(mapPopulation)
+    data class CensusDetails(
+        val lat: BigDecimal,
+        val long: BigDecimal,
+        val population: Population,
+        val weather: Weather
+    )
+
+    fun getCensus(name: CityName): CensusDetails {
+        database.useConnection { conn ->
+            val sql = """
+                SELECT * FROM `all` WHERE slug = ?
+            """
+            conn.prepareStatement(sql).use { statement ->
+                statement.setString(1, name.slug)
+                return statement.executeQuery().asIterable()
+                    .map {
+                        CensusDetails(
+                            it.getBigDecimal("lat"),
+                            it.getBigDecimal("lon"),
+                            mapPopulation(it),
+                            mapWeather(it)
+                        )
+                    }
+                    .first()
+            }
+        }
     }
 }

@@ -9,15 +9,18 @@
  */
 package app.cityscout.model
 
-import javax.annotation.processing.Generated
-import kotlinx.serialization.Serializable
+import java.math.BigDecimal
 
-@Serializable
+import javax.annotation.processing.Generated
+
 @Generated
 data class City(
     val name: CityName,
     val reason: String,
     val img: String,
-    val redfin: String? = null,
-    val population: Population? = null
+    val redfin: String,
+    val lat: BigDecimal,
+    val lon: BigDecimal,
+    val population: Population,
+    val weather: Weather
 )
