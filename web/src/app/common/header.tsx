@@ -20,8 +20,7 @@ import {AiOutlineMenu,} from "react-icons/ai";
 
 
 export default function Header() {
-    const bg = "white";
-    const cl = "grey.800";
+    const cl = "gray.200";
     const mobileNav = useDisclosure();
 
     const MobileNavContent = (
@@ -35,7 +34,7 @@ export default function Header() {
             p={2}
             pb={4}
             m={2}
-            bg={bg}
+            backgroundColor='white'
             spacing={3}
             rounded="sm"
             shadow="sm"
@@ -45,7 +44,7 @@ export default function Header() {
                 justifySelf="self-start"
                 onClick={mobileNav.onClose}
             />
-            <Link as={NextLink} href='/explore'>
+            <Link as={NextLink} href='../explore'>
                 <Button
                     w="full">
                     Explore
@@ -55,10 +54,6 @@ export default function Header() {
     );
     return (
         <chakra.header
-            bg={bg}
-            pos="absolute"
-            top={0}
-            width='full'
             px={{
                 base: 2,
                 sm: 4,
@@ -82,11 +77,11 @@ export default function Header() {
                     }}
                 >
                     <HStack spacing={1}>
-                        <Link as={NextLink} href='/explore'>
+                        <Link as={NextLink} href='../explore'>
                             <Button
-                                bg={bg}
-                                color="grey.500"
+                                color="white"
                                 display="inline-flex"
+                                backgroundColor='transparent'
                                 alignItems="center"
                                 fontSize="md"
                                 _hover={{
@@ -99,10 +94,10 @@ export default function Header() {
                                 Explore
                             </Button>
                         </Link>
-                        <Link as={NextLink} href='/explore'>
+                        <Link as={NextLink} href='../explore'>
                             <Button
-                                bg={bg}
-                                color="grey.500"
+                                color="white"
+                                backgroundColor='transparent'
                                 display="inline-flex"
                                 alignItems="center"
                                 fontSize="md"
@@ -122,14 +117,18 @@ export default function Header() {
                 <Box display="flex" alignItems="center">
                     <HStack spacing={1}>
                         <Button
-                            color="current"
                             variant="ghost"
+                            color='white'
+                            _hover={{
+                                color: cl,
+                            }}
                             size="sm">
                             Sign in
                         </Button>
                         <Button
-                            color="current"
                             variant="solid"
+                            colorScheme='orange'
+                            color='white'
                             size="sm">
                             Sign up
                         </Button>
@@ -141,7 +140,7 @@ export default function Header() {
                         }}
                         aria-label="Open menu"
                         fontSize="20px"
-                        color="grey.800"
+                        color="gray.800"
                         variant="ghost"
                         icon={<AiOutlineMenu/>}
                         onClick={mobileNav.onOpen}

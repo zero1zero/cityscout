@@ -1,10 +1,9 @@
 'use client';
 
-import './common/globals.css'
+import './layout.css'
 import * as React from 'react';
 import {Providers} from "@/app/providers";
-import Header from "@/app/common/header";
-import Footer from "@/app/common/footer";
+import {TourProvider} from "@reactour/tour";
 
 export default function RootLayout({children}: {
     children: React.ReactNode
@@ -23,10 +22,7 @@ export default function RootLayout({children}: {
         </head>
         <body>
         <Providers>
-            <Header/>
             {children}
-
-            <Footer/>
         </Providers>
         </body>
         </html>

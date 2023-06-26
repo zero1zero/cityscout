@@ -20,7 +20,7 @@ export default class API {
     }
 
     explore = async (criterion: Criterion): Promise<Cities> => {
-        return this.post('/explore', criterion)
+        return this.post('/api/explore', criterion)
             .then(r => r.data as Cities)
     }
 

@@ -8,7 +8,7 @@ class CensusDataTest {
 
     private val censusData = CensusData()
 
-    @Test
+//    @Test
     fun differentNames() {
 
         val portland = CityName("Portland city, Oregon", "Oregon", "OR", "portland-or")

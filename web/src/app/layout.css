@@ -1,0 +1,9 @@
+html, body {
+}
+
+body {
+    /*height: 100vh;*/
+    background-image: linear-gradient(to bottom, #FFFFFF00 0, #001217FF 100vh, #001217FF 100vh, #153329C2 100%), url('../../public/bg.jpg') ;
+    background-size: cover 100vh;
+    background-repeat: no-repeat;
+}

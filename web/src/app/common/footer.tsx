@@ -1,59 +1,28 @@
 'use client';
 
-import {Center, chakra, Flex, Icon, Image, Link} from '@chakra-ui/react';
+import {chakra, Container, Link, Stack, Text} from '@chakra-ui/react';
 import React from 'react';
-import {FiMail} from "react-icons/fi";
 
 export default function Footer() {
     return (
-        <Flex
-            w="full"
-            position='absolute'
-            bottom='0'
-            as="footer"
-            flexDir={{
-                base: "column",
-                sm: "row",
-            }}
-            align="center"
-            justify="space-between"
-            px="6"
-            py="4"
-            bg="white"
-        >
-            <Image
-                src="/icon.svg"
-                alt="CITYSCOUT"
-                width={27}
-                height={27}
-            />
-
-            <chakra.p
-                py={{
-                    base: "2",
-                    sm: "0",
-                }}
-                fontSize={'sm'}
-                color="grey.500"
-            >
-                Digital Indy LLC.
-            </chakra.p>
-
-            <Flex mx="-2">
-                <Link
-                    href="mailto:zack@digitalindy.co"
-                    color="grey.600"
-                    _hover={{
-                        color: "grey.500",
-                    }}
-                    aria-label="Email"
-                >
-                    <Center>
-                        <Icon as={FiMail}/>
-                    </Center>
-                </Link>
-
-            </Flex>
-        </Flex>
+        <chakra.footer
+            color={'gray.800'}>
+            <Container
+                as={Stack}
+                maxW={'7xl'}
+                color='white'
+                py={4}
+                direction={{ base: 'column', md: 'row' }}
+                spacing={4}
+                justify={{ base: 'center', md: 'space-between' }}
+                align={{ base: 'center', md: 'center' }}>
+                <Stack direction={'row'} spacing={6}>
+                    <Link href={'#'}>Home</Link>
+                    <Link href={'#'}>About</Link>
+                    <Link href={'#'}>Contact</Link>
+                </Stack>
+                <Text as='sup'>© 2023 Digital Indy LLC.</Text>
+            </Container>
+        </chakra.footer>
     );
 }

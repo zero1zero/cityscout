@@ -25,13 +25,8 @@ import {Map} from "@/app/explore/Map";
 import {BarDatum, ResponsiveBar} from "@nivo/bar";
 import {ResponsivePie} from "@nivo/pie";
 import {animated, SpringValue, to} from '@react-spring/web'
-import {
-    ComputedNodeWithoutStyles,
-    DefaultTreeMapDatum,
-    htmlNodeTransform,
-    NodeProps,
-    ResponsiveTreeMapHtml
-} from "@nivo/treemap";
+import {theme} from '../providers'
+import {DefaultTreeMapDatum, htmlNodeTransform, NodeProps, ResponsiveTreeMapHtml} from "@nivo/treemap";
 import Forecast from "@/app/explore/city/Forecast";
 import {ResponsiveLine} from "@nivo/line";
 import CityStat from "@/app/explore/city/Stat";
@@ -98,12 +93,13 @@ export default function CityCard({city}: { city: City }) {
     ]
 
     const AgeDistributionBar = () => {
-        // @ts-ignore
-        // @ts-ignore
         return (
             <ResponsiveBar
                 data={populationData}
-                colors={{scheme: 'set2'}}
+                colors={[
+                    theme.colors.green["300"],
+                    theme.colors.orange["200"]
+                ]}
                 indexBy='population'
                 keys={['Male', 'Female']}
                 enableGridX={false}
@@ -120,7 +116,7 @@ export default function CityCard({city}: { city: City }) {
                         value: 0,
                         lineStyle: {strokeOpacity: 0},
                         textStyle: {
-                            fill: '#F2913D',
+                            fill: theme.colors.orange["500"],
                         },
                         legend: 'Male',
                         legendPosition: 'top-right',
@@ -130,8 +126,12 @@ export default function CityCard({city}: { city: City }) {
                     {
                         axis: 'x',
                         value: 0,
-                        // lineStyle={ stroke='#D9695F', strokeWidth=1 },
-                        textStyle: {fill: '#8C4A81'},
+                        lineStyle:{
+                            stroke: theme.colors.red["500"],
+                            strokeWidth:1 },
+                        textStyle: {
+                            fill: theme.colors.green["500"]
+                        },
                         legend: 'Female',
                         legendPosition: 'top-left',
                         // @ts-ignore
@@ -140,7 +140,6 @@ export default function CityCard({city}: { city: City }) {
                 ]}
                 margin={{top: 30, right: 0, bottom: 0, left: 72}}
                 layout="horizontal"
-                // colors={['#8C4A81', '#F2913D', '#D9695F', '#e25c3b']}
                 tooltip={(node) => {
                     return (
                         <Text bg='white' p={2} borderWidth={2} rounded="lg" shadow="lg">
@@ -167,12 +166,20 @@ export default function CityCard({city}: { city: City }) {
         return (
             <ResponsivePie
                 data={commuteData}
-                colors={{scheme: 'set2'}}
-                margin={{top: 0, right: 10, bottom: 0, left: 10}}
+                colors={[theme.colors.blue["200"],
+                    theme.colors.orange["200"],
+                    theme.colors.yellow["200"],
+                    theme.colors.green["200"],
+                    theme.colors.pink["200"],
+                    theme.colors.teal["200"],
+                    theme.colors.red["200"],
+                    theme.colors.aqua["200"],
+                ]}
+                margin={{top: 10, right: 10, bottom: 10, left: 10}}
                 arcLabel={(item) => `${item.id}`}
                 tooltip={(node) => {
                     return (
-                        <Text bg='white' p={2} borderWidth={2} rounded="lg" shadow="lg">
+                        <Text bg='white' p={2} borderWidth={1} rounded="lg" shadow="lg">
                             {new Intl.NumberFormat('en-us', {maximumFractionDigits: 1})
                                 .format(node.datum.value * 100)}% - {node.datum.label}
                         </Text>
@@ -197,7 +204,7 @@ export default function CityCard({city}: { city: City }) {
                 arcLinkLabelsTextColor="#333333"
                 arcLinkLabelsThickness={2}
                 arcLinkLabelsColor={{from: 'color'}}
-                arcLabelsSkipAngle={30}
+                arcLabelsSkipAngle={25}
             />
         )
     }
@@ -212,20 +219,6 @@ export default function CityCard({city}: { city: City }) {
                 "count": occupation.count / city.population.occupation_all
             }
         })
-    }
-
-    const breakCell = (node: Omit<ComputedNodeWithoutStyles<DefaultTreeMapDatum>, 'label' | 'parentLabel'>): string => {
-        const perc = node.data.value!!
-
-        const realw = node.labelRotation < 0 ? node.height : node.width
-
-        const words = node.data.id.split(" ").slice(0, (node.width / 50))
-
-        if (words.length != node.data.id.split(" ").length) {
-            return words.join(" ") + "..."
-        }
-
-        return words.join(" ")
     }
 
     /**
@@ -320,7 +313,7 @@ export default function CityCard({city}: { city: City }) {
                             pointerEvents: 'none',
                         }}
                     >
-                        {node.label}
+                        <Text fontSize={'xs'}>{node.label}</Text>
                     </animated.span>
                 )}
             </animated.div>
@@ -331,7 +324,15 @@ export default function CityCard({city}: { city: City }) {
         return (
             <ResponsiveTreeMapHtml
                 data={occupationData}
-                colors={{scheme: 'set2'}}
+                colors={[theme.colors.blue["200"],
+                    theme.colors.orange["200"],
+                    theme.colors.yellow["200"],
+                    theme.colors.green["200"],
+                    theme.colors.pink["200"],
+                    theme.colors.teal["200"],
+                    theme.colors.red["200"],
+                    theme.colors.aqua["200"],
+                ]}
                 identity="name"
                 value="count"
                 nodeComponent={CustomNode}
@@ -339,14 +340,14 @@ export default function CityCard({city}: { city: City }) {
                 label={(node) => node.id}
                 tooltip={(node) => {
                     return (
-                        <Text bg='white' p={2} borderWidth={2} rounded="lg" shadow="lg">
+                        <Text bg='white' p={2} borderWidth={1} rounded="lg" shadow="lg">
                             {new Intl.NumberFormat('en-us', {maximumFractionDigits: 1})
                                 .format(node.node.value * 100)}% - {node.node.id}
                         </Text>
                     )
                 }}
                 enableParentLabel={false}
-                labelSkipSize={15}
+                labelSkipSize={50}
             />
         )
     }
@@ -384,7 +385,11 @@ export default function CityCard({city}: { city: City }) {
     const WeatherTrend = () => (
         <ResponsiveLine
             data={weatherData}
-            colors={{scheme: 'set2'}}
+            colors={[
+                theme.colors.orange["200"],
+                theme.colors.red["200"],
+                theme.colors.blue["200"]
+            ]}
             margin={{top: 20, right: 110, bottom: 50, left: 60}}
             xScale={{type: 'point'}}
             yScale={{
@@ -394,7 +399,7 @@ export default function CityCard({city}: { city: City }) {
             }}
             tooltip={(node) => {
                 return (
-                    <Text bg='white' p={2} borderWidth={2} rounded="lg" shadow="lg">
+                    <Text bg='white' p={2} borderWidth={1} rounded="lg" shadow="lg">
                         {node.point.data.x as string} - {node.point.serieId} - {new Intl.NumberFormat('en-us', {maximumFractionDigits: 1}).format(node.point.data.y as number)}°
                     </Text>
                 )
@@ -549,42 +554,42 @@ export default function CityCard({city}: { city: City }) {
                     <ListItem>
                         <Link isExternal
                               href={'https://en.wikipedia.org/w/index.php?search=' + encodeURIComponent(city.name.city) + '&title=Special%3ASearch&ns0=1'}>
-                            <ListIcon as={FiExternalLink} color='brand.500'/>
+                            <ListIcon as={FiExternalLink} color='blue'/>
                             Wikipedia
                         </Link>
                     </ListItem>
                     <ListItem>
                         <Link isExternal
                               href={'https://datausa.io/profile/geo/' + city.name.city.replace(/, /, '-').toLowerCase()}>
-                            <ListIcon as={FiExternalLink} color='brand.500'/>
+                            <ListIcon as={FiExternalLink} color='blue'/>
                             City Data
                         </Link>
                     </ListItem>
                     <ListItem>
                         <Link isExternal
                               href={'https://datausa.io/profile/geo/' + city.name.city.replace(/, /, '-').toLowerCase()}>
-                            <ListIcon as={FiExternalLink} color='brand.500'/>
+                            <ListIcon as={FiExternalLink} color='blue'/>
                             Census Profile
                         </Link>
                     </ListItem>
                     <ListItem>
                         <Link isExternal
                               href={'https://datausa.io/profile/geo/' + city.name.city.replace(/, /, '-').toLowerCase()}>
-                            <ListIcon as={FiExternalLink} color='brand.500'/>
+                            <ListIcon as={FiExternalLink} color='blue'/>
                             Current Weather
                         </Link>
                     </ListItem>
                     <ListItem>
                         <Link isExternal
                               href={'https://datausa.io/profile/geo/' + city.name.city.replace(/, /, '-').toLowerCase()}>
-                            <ListIcon as={FiExternalLink} color='brand.500'/>
+                            <ListIcon as={FiExternalLink} color='blue'/>
                             VRBO Rentals
                         </Link>
                     </ListItem>
                     <ListItem>
                         <Link isExternal
                               href={'https://datausa.io/profile/geo/' + city.name.city.replace(/, /, '-').toLowerCase()}>
-                            <ListIcon as={FiExternalLink} color='brand.500'/>
+                            <ListIcon as={FiExternalLink} color='blue'/>
                             Redfin Homes &amp; Rentals
                         </Link>
                     </ListItem>
@@ -596,7 +601,6 @@ export default function CityCard({city}: { city: City }) {
     return (
         <Flex
             bg="white"
-            maxW='3xl'
             rounded="lg"
             shadow="lg"
             mb={4}
@@ -620,7 +624,7 @@ export default function CityCard({city}: { city: City }) {
 
                 <Text
                     display="block"
-                    color="grey.800"
+                    color="gray.800"
                     fontSize="2xl"
                     as='h3'
                 >
@@ -629,7 +633,7 @@ export default function CityCard({city}: { city: City }) {
                 <Text
                     mt={2}
                     fontSize="sm"
-                    color="grey.600"
+                    color="gray.600"
                 >
                     {city.reason}
                 </Text>

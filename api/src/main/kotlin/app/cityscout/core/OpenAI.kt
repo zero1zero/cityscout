@@ -30,7 +30,8 @@ class OpenAI {
     @OptIn(BetaOpenAI::class)
     suspend fun go(criterion: List<String>): List<CityAndReason> {
         val content =
-            "List 3 cities that match all these attributes: \npopulation greater than 200\n" + criterion.joinToString("\n") + ". Give 1 paragraph reasoning for each. If you can't meet one of the criteria, explain why."
+            "List 3 cities in the US that match all these attributes: \n" + criterion.joinToString("\n") + "\n." +
+            "Give 1 paragraph reasoning for each. If you can't meet one of the criteria, explain why."
 
         print(content)
 

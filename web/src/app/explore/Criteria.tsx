@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
     Box,
     Button,
@@ -8,7 +8,7 @@ import {
     EditableInput,
     EditablePreview,
     Flex,
-    FormControl,
+    FormControl, HStack,
     IconButton,
     Input,
     Kbd,
@@ -20,23 +20,22 @@ import {
     TagCloseButton,
     TagLabel,
     Text,
-    VStack,
-    Wrap,
-    WrapItem
+    VStack
 } from "@chakra-ui/react";
-import {MdClose} from "react-icons/md";
 import {Criterion} from "@/model/Criterion";
-import {FiCloudLightning, FiInfo, FiPlus, FiRefreshCw} from "react-icons/fi";
+import {FiCloudLightning, FiInfo, FiPlus, FiRefreshCw, FiX} from "react-icons/fi";
 import Explorer from "@/core/Explorer";
 
-export default function Criteria({criterion, loading, moreToGo, onAdd, onChange, onRemove, onRecommend}: {
+
+export default function Criteria({criterion, loading, moreToGo, onAdd, onChange, onRemove, onRecommend, tips}: {
     criterion: Criterion,
     loading: boolean,
     moreToGo: number
     onAdd: (criteria: string) => void,
     onChange: (last: string, next: string) => void,
     onRemove: (criteria: string) => void,
-    onRecommend: () => void
+    onRecommend: () => void,
+    tips: string[]
 }) {
 
     const recommendMore = () => {
@@ -47,27 +46,28 @@ export default function Criteria({criterion, loading, moreToGo, onAdd, onChange,
                 return (<Text>Add <Text as='b'>{moreToGo}</Text> more criteria to get city recommendations!</Text>)
         }
 
-
         return (
             <VStack
                 pt={5}
                 width='100%'>
                 {xMore()}
+                <Box className='step4' w='100%'>
                 <Button
-                    rightIcon={loading ? <CircularProgress isIndeterminate size='5'/> : <FiCloudLightning/>}
+                    leftIcon={loading ? <CircularProgress isIndeterminate size='5'/> : <FiCloudLightning/>}
                     width='100%'
                     isDisabled={loading || !available}
                     rounded="md" shadow="sm"
-                    colorScheme='brand'
+                    colorScheme='orange'
+                    color='white'
                     onClick={onRecommend}>
                     Recommend Cities
                 </Button>
+                </Box>
             </VStack>
         )
     }
 
     const tags = () => {
-
         const onBlur = (event: any) => {
             const newTag = event.target.value;
             const lastTag = event.currentTarget.getAttribute("data-last");
@@ -76,53 +76,53 @@ export default function Criteria({criterion, loading, moreToGo, onAdd, onChange,
         }
 
         return (
-            <Wrap>
-                {criterion.criterion.map((criteria) => (
-                    <WrapItem key={'wi' + criteria}>
+            <Flex
+                flexDirection='row'
+                flexWrap='wrap'
+                overflow='hidden'
+                >
+
+                {criterion.criterion.map((criteria, index) => (
+                    <Flex
+                        pr={1}
+                        key={'wi' + criteria}>
                         <Tag size={"lg"}
                              variant='outline'
-                             color='brand.600'
+                             color='blue.700'
+                             pl={1}
+                             mb={2}
                              key={'t' + criteria}>
+                            <TagCloseButton
+                                style={{marginInlineStart: 0, marginInlineEnd: 3}}
+                                w={5}
+                                as={FiX} color='red' onClick={() => onRemove(criteria)}/>
+                            {/*<Button*/}
+                            {/*    as={FiEdit} color='blue'*/}
+                            {/*    backgroundColor='transparent'*/}
+                            {/*    w={5}*/}
+                            {/*    p={0}*/}
+                            {/*    onClick={() => onRemove(criteria)}/>*/}
+                            <Text>{index + 1}.&nbsp;</Text>
                             <TagLabel>
                                 <Editable
                                     defaultValue={criteria}>
                                     <EditablePreview/>
-                                    <EditableInput boxShadow='none !important' onBlur={onBlur} data-last={criteria}/>
+                                    <EditableInput
+                                        boxShadow='none !important' onBlur={onBlur} data-last={criteria}/>
                                 </Editable>
                             </TagLabel>
-                            <TagCloseButton as={MdClose} color={"#ff5555"} onClick={() => onRemove(criteria)}/>
                         </Tag>
-                    </WrapItem>
+                    </Flex>
                 ))}
-            </Wrap>
+            </Flex>
         )
     }
 
-    function shuffle(array: string[]) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-
-        return array
-    }
-
-    const tips = (onSubmit: (criteria: string) => void) => {
-        const items = [
-            "Easy access to hiking",
-            "Fun nightlife",
-            "Has at least one brewery",
-            "Job opportunities in tech",
-            "Similar weather to San Diego",
-            "1 hour from a major city",
-            "Lower taxes than Portland",
-            "Job opportunities in tech",
-            "Small town feel"
-        ];
+    const tipsList = (onSubmit: (criteria: string) => void) => {
         return (
             <List
                 spacing={3}
-                color='grey.400'
+                color='gray.600'
                 fontSize='sm'>
                 <ListItem hidden={criterion.criterion.length > 0}>
                     <ListIcon as={FiInfo}/>
@@ -131,38 +131,43 @@ export default function Criteria({criterion, loading, moreToGo, onAdd, onChange,
                 <ListItem>
                     <ListIcon as={FiInfo}/>
                     Here are some examples to get you thinking:
+                    <Box className="step3">
                     <Flex
                         ml={5}
                         flexWrap="wrap">
-                        {items
+                        {tips
                             .slice(0, 8)
                             .map((item, index) => (
                                 <Box
                                     mb={1}
                                     width="33%"
                                     key={index}>
-                                    <Text as={'cite'}>
+                                    <HStack>
                                         <IconButton
                                             aria-label='Add critieria'
                                             size='sm'
+                                            variant='outline'
                                             onClick={() => onSubmit(item)}
-                                            icon={<FiPlus/>}/> {item}
-                                    </Text>
+                                            icon={<FiPlus/>}/>
+                                        <Text as={'cite'}>
+                                            {item}
+                                        </Text>
+                                    </HStack>
                                 </Box>
                             ))}
                         <Box
                             mb={1}
                             width="33%"
                             key={'LOAD-MORE'}>
-                            <Text as={'b'}>
-                                <IconButton
-                                    aria-label='Add critieria'
-                                    size='sm'
-                                    onClick={() => onSubmit('LOAD-MORE')}
-                                    icon={<FiRefreshCw/>}/> Load more...
-                            </Text>
+                            <Button
+                                aria-label='Add critieria'
+                                size='sm'
+                                variant='ghost'
+                                onClick={() => onSubmit('LOAD-MORE')}
+                                leftIcon={<FiRefreshCw/>}>Load more...</Button>
                         </Box>
                     </Flex>
+                    </Box>
                 </ListItem>
                 <ListItem>
                     <ListIcon as={FiInfo}/>
@@ -176,70 +181,76 @@ export default function Criteria({criterion, loading, moreToGo, onAdd, onChange,
         )
     }
 
+    const AddCriteria = ({onSubmit}: { onSubmit: (criteria: string) => void }) => {
+
+        const submit = (event: any) => {
+            event.preventDefault();
+            onSubmit(event.target.criteria.value)
+
+            event.target.criteria.value = ''
+        }
+        return (
+            <chakra.form
+                method="POST"
+                autoComplete='off'
+                onSubmit={submit}
+                width='100%'
+                mb={3}
+            >
+                <Flex>
+                    <FormControl>
+                        <Box className="step1">
+                        <Input
+                            type="text"
+                            name="criteria"
+                            id="criteria"
+                            autoFocus={true}
+                            placeholder="What are you looking for in a City?"
+                            focusBorderColor="blue.500"
+                            bg='white'
+                            shadow="sm"
+                            size="md"
+                            w="full"
+                            rounded="md"
+                            autoComplete='off'
+                            data-1p-ignore='true'
+                        />
+                        </Box>
+                    </FormControl>
+
+                    <Spacer/>
+
+                    <Box className="step2">
+                    <Button leftIcon={<FiPlus/>}
+                            rounded="md" shadow="sm"
+                            colorScheme='orange'
+                            color='white'
+                            ml={3}
+                            type='submit'>
+                        Add
+                    </Button>
+                    </Box>
+                </Flex>
+            </chakra.form>
+        )
+    }
+
     return (
         <>
             <VStack
-                w={{xl: '50%', md: '80%', sm: 'full'}}
                 m={4}
                 bg='white'
+                borderWidth='1px'
+                w={{xl: '70%', md: '80%', sm: 'full'}}
                 rounded="md"
-                shadow="sm"
+                shadow="lg"
                 alignItems='left'
                 p={4}>
                 <AddCriteria onSubmit={onAdd}/>
                 {tags()}
-                {tips(onAdd)}
+                {tipsList(onAdd)}
                 {recommendMore()}
             </VStack>
         </>
-    )
-}
-
-const AddCriteria = ({onSubmit}: { onSubmit: (criteria: string) => void }) => {
-
-    const submit = (event: any) => {
-        event.preventDefault();
-        onSubmit(event.target.criteria.value)
-
-        event.target.criteria.value = ''
-    }
-    return (
-        <chakra.form
-            method="POST"
-            autoComplete='off'
-            onSubmit={submit}
-            width='100%'
-            mb={3}
-        >
-            <Flex>
-                <FormControl>
-                    <Input
-                        type="text"
-                        name="criteria"
-                        id="criteria"
-                        autoFocus={true}
-                        placeholder="What are you looking for in a City?"
-                        focusBorderColor="brand.400"
-                        bg='white'
-                        shadow="sm"
-                        size="md"
-                        w="full"
-                        rounded="md"
-                        autoComplete='off'
-                        data-1p-ignore='true'
-                    />
-                </FormControl>
-
-                <Spacer/>
-
-                <Button rightIcon={<FiPlus/>}
-                        rounded="md" shadow="sm"
-                        colorScheme='brand'
-                        ml={3}
-                        type='submit'>
-                    Add
-                </Button>
-            </Flex>
-        </chakra.form>
     )
 }

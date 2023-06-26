@@ -1,7 +1,9 @@
 package app.cityscout
 
+import app.cityscout.core.CensusData
 import app.cityscout.core.OpenAI
 import app.cityscout.model.Criterion
+import app.cityscout.routes.censusData
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -63,6 +65,16 @@ const val resp6 =
         
 """
 
+//const val resp7 =
+//    """
+//1) Medford, Oregon - With a population of over 82,000, Medford meets the population requirement. It also has lower taxes than Portland, making it a more affordable option. The city is known for its conservative-leaning community and is located on the west coast. Medford has a small-town feel with a charming downtown area and plenty of outdoor activities nearby, including the nearby mountains of the Cascade Range.
+//
+//2) Redding, California - Redding has a population of over 90,000 and has lower taxes than Portland. It is also known for its conservative-leaning community and is located on the west coast. The city has a small-town feel with a historic downtown area and easy access to outdoor activities, including the nearby mountains of the Trinity Alps.
+//
+//3) Coeur d'Alene, Idaho - While not technically on the west coast, Coeur d'Alene is located near the border of Washington state and has a population of over 50,000. It has lower taxes than Portland and is known for its conservative-leaning community. The city has a charming downtown area and plenty of outdoor activities nearby, including the nearby mountains of the Idaho Panhandle National Forest. Despite its growing population, Coeur d'Alene still maintains a small-town feel.
+//
+//"""
+
 class OpenAITest {
 
     val openAI = OpenAI()
@@ -88,7 +100,7 @@ class OpenAITest {
         }
     }
 
-    @Test
+//    @Test
     fun testSmallTown() {
 
         val criterion = Criterion(
@@ -116,7 +128,16 @@ class OpenAITest {
         assertEquals(3, parsed.size)
         for (city in parsed) {
             assertTrue(city.city != "")
+            assertTrue(city.city.contains(","))
             assertTrue(city.reason != "")
         }
+
+        parsed.stream()
+            .map {
+                val name = censusData.getCityName(it.city)
+                val census = censusData.getCensus(name)
+
+                print(census)
+            }
     }
 }

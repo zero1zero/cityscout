@@ -8,7 +8,7 @@
  * when the generation process is re-run.
  */
 
-import {City} from "./City";
+import { City } from "./City";
 
 export interface Cities {
     cities: City[];

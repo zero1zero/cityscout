@@ -11,33 +11,28 @@ import {
     StatNumber,
     Text
 } from "@chakra-ui/react";
+
 import {
-    WiCloud,
-    WiCloudy,
     WiDayCloudy,
-    WiDayCloudyHigh,
-    WiDayHaze,
+    WiDayFog,
     WiDaySunny,
-    WiDaySunnyOvercast,
+    WiDust,
     WiFog,
     WiHot,
     WiNightClear,
     WiRain,
-    WiRainMix,
-    WiRainWind,
     WiShowers,
+    WiSleet,
     WiSmoke,
     WiSnow,
     WiSnowflakeCold,
-    WiSnowWind,
-    WiSprinkle,
+    WiStormShowers,
     WiThunderstorm,
     WiWindy
 } from "react-icons/wi";
 import React, {useEffect, useState} from "react";
 import {City} from "@/model/City";
 import {AxiosResponse} from "axios";
-import {IconType} from "react-icons/lib";
 
 interface ForecastData {
     operationalMode: string;
@@ -113,7 +108,7 @@ interface ForecastDatum {
     low: string;
     high: string;
     text: string;
-    weather: string;
+    icon: string;
 }
 
 export type TempLabel = "Low" | "High";
@@ -138,7 +133,7 @@ export default function Forecast({city}: { city: City }) {
                 .map((item, index) => {
                     return {
                         day: item,
-                        weather: forecasts.data.weather[index],
+                        icon: forecasts.data.iconLink[index],
                         low: forecasts.data.temperature[index],
                         high: forecasts.data.temperature[index],
                         text: forecasts.data.text[index].split(".").slice(0, 2).join(".") + "."
@@ -153,94 +148,73 @@ export default function Forecast({city}: { city: City }) {
         return <></>
     }
 
-    //"Mostly Clear"
-    // 1	"Sunny then Slight Chance T-storms"
-    // 2	"Slight Chance T-storms"
-    // 3	"Slight Chance T-storms"
-    // 4	"Partly Cloudy"
-    // 5	"Sunny"
-    // 6	"Partly Cloudy then Slight Chance T-storms"
-    // 7	"Mostly Sunny then Slight Chance T-storms"
-    // 8	"Slight Chance T-storms"
-    // 9	"Sunny"
-    // 10	"Slight Chance T-storms"
-    // 11	"Sunny"
-    // 12	"Mostly Clear"
-    // 13	"Sunny"
     const icon = (forecast: ForecastDatum) => {
 
-        const weather = forecast.weather
+        const iconMap: Record<string, any> = {
+            bkn: WiDayCloudy,
+            nbkn: WiNightClear,
+            few: WiDaySunny,
+            nfew: WiNightClear,
+            sct: WiDayCloudy,
+            nsct: WiNightClear,
+            ovc: WiDayCloudy,
+            novc: WiNightClear,
+            wind: WiWindy,
+            nwind: WiWindy,
+            hot: WiHot,
+            cold: WiSnowflakeCold,
+            rain: WiRain,
+            nra: WiRain,
+            tsra: WiThunderstorm,
+            ntsra: WiThunderstorm,
+            shra: WiShowers,
+            shwrs: WiShowers,
+            hi_nshwrs: WiShowers,
+            scttsra: WiStormShowers,
+            nscttsra: WiStormShowers,
+            hi_ntsra: WiStormShowers,
+            raip: WiSleet,
+            nraip: WiSleet,
+            fzra: WiSleet,
+            hi_tsra: WiThunderstorm,
+            rasn: WiSleet,
+            nrasn: WiSleet,
+            sn: WiSnow,
+            nsn: WiSnow,
+            smoke: WiSmoke,
+            hazy: WiDayFog,
+            mist: WiFog,
+            fog: WiFog,
+            nfg: WiFog,
+            du: WiDust,
+            dust: WiDust,
+            mix: WiSleet,
+            nmix: WiSleet,
+            skc: WiDaySunny,
+            nskc: WiNightClear
+        };
 
-        const iconLookup: { [name: string]: IconType } = {
-            "Sunny": WiDaySunny,
-            "Mostly Sunny": WiDaySunnyOvercast,
-            "Partly Sunny": WiDayCloudyHigh,
-            "Fair": WiDayCloudyHigh,
-            "Cloudy": WiCloudy,
-            "Mostly Cloudy": WiCloudy,
-            "Partly Cloudy": WiDayCloudy,
-            "Overcast": WiCloud,
-            "Clear": WiNightClear,
-            "Fog": WiFog,
-            "Patchy Fog": WiFog,
-            "Dense Fog": WiFog,
-            "Haze": WiDayHaze,
-            "Smoke": WiSmoke,
-            "Showers": WiShowers,
-            "Chance Showers": WiShowers,
-            "Slight Chance Showers": WiShowers,
-            "Heavy Showers": WiShowers,
-            "Light Showers": WiShowers,
-            "Rain": WiRain,
-            "Heavy Rain": WiRain,
-            "Light Rain": WiRain,
-            "Slight Chance Rain": WiRain,
-            "Chance Rain": WiRain,
-            "Thunderstorms": WiThunderstorm,
-            "Chance Thunderstorms": WiThunderstorm,
-            "Slight Chance Thunderstorms": WiThunderstorm,
-            "Slight Chance T-storms": WiThunderstorm,
-            "Chance T-storms": WiThunderstorm,
-            "Rain-Wind": WiRainWind,
-            "Sprinkle": WiSprinkle,
-            "Drizzle": WiSprinkle,
-            "Light Drizzle": WiSprinkle,
-            "Heavy Drizzle": WiSprinkle,
-            "Wintry Mix": WiRainMix,
-            "Sleet": WiRainMix,
-            "Ice Pellets": WiRainMix,
-            "Freezing Rain": WiRainMix,
-            "Freezing Drizzle": WiRainMix,
-            "Rain Mix": WiRainMix,
-            "Snow": WiSnow,
-            "Heavy Snow": WiSnow,
-            "Light Snow": WiSnow,
-            "Flurries": WiSnow,
-            "Slight Chance Snow": WiSnow,
-            "Chance Snow": WiSnow,
-            "Heavy Snow Showers": WiSnow,
-            "Blowing Snow": WiSnowWind,
-            "Windy": WiWindy,
-            "Breezy": WiWindy,
-            "Blustery": WiWindy,
-            "Calm": WiWindy,
-            "Light Winds": WiWindy,
-            "Gusty": WiWindy,
-            "Squall": WiWindy,
-            "Wind Chill": WiWindy,
-            "Wind Chill Advisory": WiWindy,
-            "Wind Chill Warning": WiWindy,
-            "Frost": WiSnowflakeCold,
-            "Cold": WiSnowflakeCold,
-            "Frost Advisory": WiSnowflakeCold,
-            "Freeze Warning": WiSnowflakeCold,
-            "Hot": WiHot
+        function extractFilename(url: string): string | null {
+            const regex = /(?:i=|j=|newimages\/medium\/)(\w+\d*(?:\.\w+)?)/g;
+            const match = regex.exec(url);
+            if (match) {
+                return match[1];
+            }
+            return null
         }
 
-        const WeatherIconComponent = iconLookup[weather];
+        const file = extractFilename(forecast.icon);
 
-        return WeatherIconComponent ? <Icon as={WeatherIconComponent} boxSize={20} w={'100%'}/> :
-            <Icon as={WiDayCloudy} boxSize={20} borderColor='red' borderWidth={1}/>;
+        if (file == null) {
+            return <Icon as={WiDayCloudy} boxSize={20} w={'100%'} borderColor='red' borderWidth={1}/>;
+        }
+
+        const iconKey = file.split('.')[0].replace(/\d+$/, '');
+        const WeatherIcon = iconMap[iconKey]
+
+        return <Icon as={WeatherIcon} boxSize={20} w={'100%'}/>;
+
+
     }
 
     return (

@@ -35,8 +35,10 @@ class CensusData {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
+    private val sqlite = System.getenv().getOrDefault("CITIES_FILE", "${File(".").absolutePath}./data/census/data/all.sqlite")
+
     private val database: Database = Database.connect(
-        url = "jdbc:sqlite://${File(".").absolutePath}./data/census/data/all.sqlite",
+        url = "jdbc:sqlite://${sqlite}",
         driver = "org.sqlite.JDBC",
         dialect = SQLiteDialect()
     )

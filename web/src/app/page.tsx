@@ -1,13 +1,15 @@
 'use client';
 
 import React from "react";
-import CallToActionWithAnnotation from "@/app/home/hero";
-import {Box} from "@chakra-ui/react";
+import {Container} from "@chakra-ui/react";
+import Hero from "@/app/home/hero";
 
 export default function Home() {
     return (
-        <Box id={"bg-simple"}>
-            <CallToActionWithAnnotation/>
-        </Box>
+        <Container
+            h='100vh'
+            maxW='7xl'>
+            <Hero />
+        </Container>
     )
 }

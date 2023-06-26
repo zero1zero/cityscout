@@ -20,33 +20,34 @@ val housing = Scraper()
 
 fun Application.configureExplore() {
     routing {
-        post("/explore") {
-            val logger = LoggerFactory.getLogger(this.javaClass)
+        route("/api") {
+            post("/explore") {
+                val logger = LoggerFactory.getLogger(this.javaClass)
 
-            val criterion = call.receive<Criterion>()
+                val criterion = call.receive<Criterion>()
 
-            val cityAndReasons = openAI.go(criterion.criterion)
+                val cityAndReasons = openAI.go(criterion.criterion)
 
-            val cities = cityAndReasons.stream()
-                .map {
-                    val name = censusData.getCityName(it.city)
-                    val census = censusData.getCensus(name)
+                val cities = cityAndReasons.stream()
+                    .map {
+                        val name = censusData.getCityName(it.city)
+                        val census = censusData.getCensus(name)
 
-                    City(
-                        name, it.reason,
-                        images.getCityImage(name),
-                        "",//housing.getRedfinURL("${name.city}, ${name.state}"),
-                        census.lat,
-                        census.long,
-                        census.population,
-                        census.weather
-                    )
-                }
-                .toList()
+                        City(
+                            name, it.reason,
+                            images.getCityImage(name),
+                            "",//housing.getRedfinURL("${name.city}, ${name.state}"),
+                            census.lat,
+                            census.long,
+                            census.population,
+                            census.weather
+                        )
+                    }
+                    .toList()
 
-            logger.debug(cities.toString())
+                logger.debug(cities.toString())
 
-            call.respond(Cities(cities))
+                call.respond(Cities(cities))
 //            val cities = dummy
 //
 //            cities.cities.map {
@@ -57,6 +58,7 @@ fun Application.configureExplore() {
 //            Thread.sleep(2000)
 //
 //            call.respond(dummy)
+            }
         }
     }
 }

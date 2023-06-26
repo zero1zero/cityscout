@@ -8,9 +8,9 @@
  * when the generation process is re-run.
  */
 
-import {CityName} from "./CityName";
-import {Population} from "./Population";
-import {Weather} from "./Weather";
+import { CityName } from "./CityName";
+import { Population } from "./Population";
+import { Weather } from "./Weather";
 
 export interface City {
     name: CityName;

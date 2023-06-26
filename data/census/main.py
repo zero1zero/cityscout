@@ -19,6 +19,43 @@ data_folder = './data'
 session = requests_cache.CachedSession('data_cache')
 
 
+def create_cities() -> pd.DataFrame:
+    r = session.get("https://api.census.gov/data/2021/acs/acs5?get=NAME&for=place:*")
+    js = r.json()
+    headers = js[0]
+    data_rows = js[1:]
+    df = pd.DataFrame(data_rows, columns=headers)
+
+    # df = df[~df['NAME'].str.contains(' CDP,')]
+    df = df[~df['NAME'].str.contains(' CDP \(')]
+    df = df[~df['NAME'].str.contains(' borough \(')]
+
+    df['city'] = df.apply(lambda row: row['NAME']
+                          .split(", ")[0]
+                          .replace(" city", "")
+                          .replace(" town", "")
+                          .replace(" CDP", "")
+                          .replace("Urban ", "")
+                          .replace(" municipality", "")
+                          .replace(" and borough", "")
+                          .replace(" borough", "")
+                          .replace(" village", "")
+                          .replace(" unified government", "")
+                          .replace(" consolidated government", "")
+                          .replace(" metropolitan government", ""), axis=1)
+    df['state_name'] = df.apply(lambda row: row['NAME'].split(", ")[1], axis=1)
+
+    abbr = pd.read_csv(f"{data_folder}/abbr.csv")
+    df = df.merge(abbr, on="state_name")
+
+    df['slug'] = df.apply(lambda row: f"{row['city'].replace(' ', '-')}-{row['abbr']}".lower(), axis=1)
+
+    # make sure place is int
+    df['place'] = df['place'].astype(int)
+
+    return df
+
+
 def pull_acs(combined: pd.DataFrame) -> pd.DataFrame:
     datasets = {
         "group(B01001)": "population",
@@ -94,43 +131,6 @@ def pull_acs(combined: pd.DataFrame) -> pd.DataFrame:
             combined = combined.merge(df, how='inner', left_on="NAME", right_on="NAME")
 
     return combined
-
-
-def create_cities() -> pd.DataFrame:
-    r = session.get("https://api.census.gov/data/2021/acs/acs5?get=NAME&for=place:*")
-    js = r.json()
-    headers = js[0]
-    data_rows = js[1:]
-    df = pd.DataFrame(data_rows, columns=headers)
-
-    df = df[~df['NAME'].str.contains(' CDP,')]
-    df = df[~df['NAME'].str.contains(' CDP \(')]
-    df = df[~df['NAME'].str.contains(' borough \(')]
-
-    df['city'] = df.apply(lambda row: row['NAME']
-                          .split(", ")[0]
-                          .replace(" city", "")
-                          .replace(" town", "")
-                          .replace(" CDP", "")
-                          .replace(" municipality", "")
-                          .replace(" and borough", "")
-                          .replace(" borough", "")
-                          .replace(" village", "")
-                          .replace(" unified government", "")
-                          .replace(" consolidated government", "")
-                          .replace(" metropolitan government", ""), axis=1)
-    df['state_name'] = df.apply(lambda row: row['NAME'].split(", ")[1], axis=1)
-
-    abbr = pd.read_csv(f"{data_folder}/abbr.csv")
-    df = df.merge(abbr, on="state_name")
-
-    df['slug'] = df.apply(lambda row: f"{row['city'].replace(' ', '-')}-{row['abbr']}".lower(), axis=1)
-
-    # make sure place is int
-    df['place'] = df['place'].astype(int)
-
-    return df
-
 
 def merge_population_estimate(combined: pd.DataFrame):
     # https://www.census.gov/data/datasets/time-series/demo/popest/2020s-total-cities-and-towns.html#v2022
@@ -231,7 +231,7 @@ if __name__ == "__main__":
     print(datetime.now().strftime("%H:%M:%S"))
     df = create_cities()
     df = pull_acs(df)
-    df = merge_population_estimate(df)
+    # df = merge_population_estimate(df)
     df = merge_lat_long(df)
     df = merge_weather_data(df)
 

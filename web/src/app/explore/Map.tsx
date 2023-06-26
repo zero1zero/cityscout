@@ -25,7 +25,7 @@ const MapComponent = ({cities, selected}: {
             mapId: "f6c09cba9af1a1fc"
         });
         setMm(map)
-    }, [ref])
+    }, [ref, markers])
 
     useEffect(() => {
         if (mm == undefined) {

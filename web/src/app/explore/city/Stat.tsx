@@ -2,6 +2,7 @@ import {HStack, Stat, StatHelpText, StatLabel, StatNumber, Text} from "@chakra-u
 import React from "react";
 import {FiArrowDown, FiArrowRight, FiArrowUp} from "react-icons/fi";
 import {SourceTip} from "@/app/explore/City";
+import {theme} from '../../providers'
 
 export default function CityStat({name, value, change, pre, post, w}:
                                      {
@@ -20,15 +21,15 @@ export default function CityStat({name, value, change, pre, post, w}:
 
         const arrow = () => {
             if (change > 0) {
-                return <FiArrowUp color='green'/>
+                return <FiArrowUp color={theme.colors.green['300']}/>
             }
 
             if (change == 0) {
-                return <FiArrowRight color='grey'/>
+                return <FiArrowRight color={theme.colors.gray['300']}/>
             }
 
             if (change < 0) {
-                return <FiArrowDown color='red'/>
+                return <FiArrowDown color={theme.colors.red['300']}/>
             }
         }
 
